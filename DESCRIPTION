@@ -1,0 +1,13 @@
+Package: QoLR
+Version: 1.0
+Date: 2014-07-13
+Title: Analysis of Health-Related Quality of Life in oncology
+Author: Amelie Anota
+Maintainer: Amelie Anota <aanota@chu-besancon.fr>
+Depends: R (>= 2.10.0), survival, zoo
+Description: To generate the scores of the EORTC QLQ-C30 questionnaire and supplementary modules and to determine the time to quality of life score deterioration in longitudinal analysis.
+License: GPL (>= 2.0)
+Packaged: 2014-07-13 07:55:28 UTC; Am<c3><a9>lie
+NeedsCompilation: no
+Repository: CRAN
+Date/Publication: 2014-07-13 13:02:36
