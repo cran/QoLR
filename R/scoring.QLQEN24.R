@@ -1,5 +1,18 @@
 scoring.QLQEN24 <-
-function(X,id="",items=1:24){
+function(X,id="",time=""){
+
+items=paste("q",31:54,sep="")
+
+if(length(which(is.element(items,colnames(X))))<24){
+stop("At least one item is missing: items must be named q31 to q54");
+break
+}
+
+if(length(which(match(items,colnames(X))==sort(match(items,colnames(X)))))<24){
+stop("Items must be named q31 to q54 and presented on that order in the dataset");
+break
+}
+
 if(sum(apply(X[,items],2,is.integer))<24){
 stop("Items must be integer");
 break
@@ -14,16 +27,36 @@ if(max(X[,items],na.rm=T)>4){
 stop("Maximum possible value for items is 4");
 break
 }
-if(id!=""){
+
+if((id!="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=15)
+Y=as.data.frame(Y)
+Y[,1]=X[,id]
+Y[,2]=X[,time]
+colnames(Y)=c(id,time,"ENSXI","ENSXA","ENSXE","ENLY","ENUR","ENGI","ENBI","ENSXV","ENBP","ENTN","ENMP","ENHL","ENTC")
+}
+
+if((id!="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=14)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
-
 colnames(Y)=c(id,"ENSXI","ENSXA","ENSXE","ENLY","ENUR","ENGI","ENBI","ENSXV","ENBP","ENTN","ENMP","ENHL","ENTC")
-}else{
+}
+
+if((id=="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=14)
+Y=as.data.frame(Y)
+Y[,1]=X[,time]
+colnames(Y)=c(time,"ENSXI","ENSXA","ENSXE","ENLY","ENUR","ENGI","ENBI","ENSXV","ENBP","ENTN","ENMP","ENHL","ENTC")
+}
+
+if((id=="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=13)
 Y=as.data.frame(Y)
-colnames(Y)=c("ENSXI","ENSXA","ENSXE","ENLY","ENUR","ENGI","ENBI","ENSXV","ENBP","ENTN","ENMP","ENHL","ENTC")}
+colnames(Y)=c("ENSXI","ENSXA","ENSXE","ENLY","ENUR","ENGI","ENBI","ENSXV","ENBP","ENTN","ENMP","ENHL","ENTC")
+}
+
+
 Y$ENSXI[!is.na(X[,items[19]])]=(1-(X[!is.na(X[,items[19]]),items[19]]-1)/3)*100
 Y$ENSXA[!is.na(X[,items[20]])]=(1-(X[!is.na(X[,items[20]]),items[20]]-1)/3)*100
 Y$ENSXE[!is.na(X[,items[24]])]=(1-(X[!is.na(X[,items[24]]),items[24]]-1)/3)*100

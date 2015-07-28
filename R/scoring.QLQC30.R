@@ -1,5 +1,17 @@
 scoring.QLQC30 <-
-function(X,id="",items=1:30){
+function(X,id="",time=""){
+
+items=paste("q",1:30,sep="")
+
+if(length(which(is.element(items,colnames(X))))<30){
+stop("At least one item is missing: items must be named q1 to q30");
+break
+}
+
+if(length(which(match(items,colnames(X))==sort(match(items,colnames(X)))))<30){
+stop("Items must be named q1 to q30 and presented on that order in the dataset");
+break
+}
 
 if(sum(apply(X[,items],2,is.integer))<30){
 stop("Items must be integers");
@@ -20,29 +32,48 @@ stop("Maximum possible value for items 29 and 30 is 7");
 break
 }
 
-if(id!=""){
+if((id!="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=17)
+Y=as.data.frame(Y)
+Y[,1]=X[,id]
+Y[,2]=X[,time]
+colnames(Y)=c(id,time,"QL","PF","RF","EF","CF","SF","FA","NV","PA","DY","SL","AP","CO","DI","FI")
+}
+
+if((id!="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=16)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
+colnames(Y)=c(id,"QL","PF","RF","EF","CF","SF","FA","NV","PA","DY","SL","AP","CO","DI","FI")
+}
 
-colnames(Y)=c(id,"QL2","PF2","RF2","EF","CF","SF","FA","NV","PA","DY","SL","AP","CO","DI","FI")
-}else{
+if((id=="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=16)
+Y=as.data.frame(Y)
+Y[,1]=X[,time]
+colnames(Y)=c(time,"QL","PF","RF","EF","CF","SF","FA","NV","PA","DY","SL","AP","CO","DI","FI")
+}
+
+if((id=="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=15)
 Y=as.data.frame(Y)
-colnames(Y)=c("QL2","PF2","RF2","EF","CF","SF","FA","NV","PA","DY","SL","AP","CO","DI","FI")}
+colnames(Y)=c("QL","PF","RF","EF","CF","SF","FA","NV","PA","DY","SL","AP","CO","DI","FI")
+}
+
+
 
 DM_ql=apply(is.na(X[,items[29:30]]),1,sum)
 rs_ql=apply(X[,items[29:30]],1,sum,na.rm=TRUE)
 rs_ql=rs_ql/(2-DM_ql)
-Y$QL2[DM_ql<=1]=(rs_ql[DM_ql<=1]-1)/6*100
+Y$QL[DM_ql<=1]=(rs_ql[DM_ql<=1]-1)/6*100
 DM_pf=apply(is.na(X[,items[1:5]]),1,sum)
 rs_pf=apply(X[,items[1:5]],1,sum,na.rm=TRUE)
 rs_pf=rs_pf/(5-DM_pf)
-Y$PF2[DM_pf<=2]=(1-(rs_pf[DM_pf<=2]-1)/3)*100
+Y$PF[DM_pf<=2]=(1-(rs_pf[DM_pf<=2]-1)/3)*100
 DM_rf=apply(is.na(X[,items[6:7]]),1,sum)
 rs_rf=apply(X[,items[6:7]],1,sum,na.rm=TRUE)
 rs_rf=rs_rf/(2-DM_rf)
-Y$RF2[DM_rf<=1]=(1-(rs_rf[DM_rf<=1]-1)/3)*100
+Y$RF[DM_rf<=1]=(1-(rs_rf[DM_rf<=1]-1)/3)*100
 DM_ef=apply(is.na(X[,items[21:24]]),1,sum)
 rs_ef=apply(X[,items[21:24]],1,sum,na.rm=TRUE)
 rs_ef=rs_ef/(4-DM_ef)

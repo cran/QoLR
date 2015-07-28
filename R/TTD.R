@@ -67,7 +67,7 @@ stop("invalide value for 'no_follow' parameter");
 break
 }
 
-if(!no_baseline=="censure" & !no_baseline=="event"){
+if(!no_baseline=="censure" & !no_baseline=="event" & !no_baseline=="excluded"){
 stop("invalide value for 'no_baseline' parameter");
 break
 }
@@ -102,6 +102,21 @@ dimnames(num1)$num=NULL
 nu=cumsum(num1)+1
 ind_pat1=union(1,nu[1:length(nu)-1])
 ttd=X[ind_pat1,c(1,3)]
+
+if(is.na(death)){
+Xc=as.data.frame(cbind(sort(rep((X[ind_pat1,1]),length(as.numeric(names(table(X[,2])))))),rep(as.numeric(names(table(X[,2]))),length(X[ind_pat1,1]))))
+colnames(Xc)=colnames(X[1:2])
+X=merge(X,Xc,by=colnames(X)[1:2],all.y=T)
+}else{
+Xc=as.data.frame(cbind(sort(rep((X[ind_pat1,1]),length(as.numeric(names(table(X[,2])))))),rep(as.numeric(names(table(X[,2]))),length(X[ind_pat1,1]))))
+###
+colnames(Xc)=colnames(X[1:2])
+Xc=merge(X,Xc,by=colnames(X)[1:2],all.y=T)
+Xc=Xc[,-which(colnames(Xc)==death)]
+Xdeath=X[ind_pat1,c(1,which(colnames(X)==death))]
+X=merge(Xc,Xdeath,by=colnames(Xc)[1],all.x=T)
+}
+
 row.names(ttd)=1:nrow(ttd)
 if(length(order)==1){
 order=rep(order,length(score))
@@ -137,9 +152,9 @@ if(no_baseline=="censure"){ttd$event[pat_baseline]=0}else{ttd$event[pat_baseline
 ttd$date_end[pat_baseline]=0
 pat_fol=(DM_follow==(ncol(scores)-1))&(!is.na(scores[,1]))
 if(no_follow=="censure"){ttd$event[pat_fol]=0}else{ttd$event[pat_fol]=1}
-ttd$date_end[pat_fol]=1 
+ttd$date_end[pat_fol]=1
 if(ref.init=="baseline"){
-if(order[i]==1){ 
+if(order[i]==1){
 mat=scores[which(is.na(ttd$event)),-1]-
 scores[which(is.na(ttd$event)),1]<=-MCID
 }else{
@@ -188,7 +203,7 @@ mat=!is.na(scores[is.na(ttd$event),-1])
 if(nrow(mat)>=1){
 mat_dates=dates[is.na(ttd$event),-1]*mat
 DM=apply(is.na(mat_dates),1,sum)
-essai=apply(mat_dates==0,1,sum,na.rm=TRUE)  
+essai=apply(mat_dates==0,1,sum,na.rm=TRUE)
 DM=DM+essai
 pat_censure=as.numeric(names(which(DM<ncol(mat_dates))))
 rownames(mat_dates)=1:nrow(mat_dates)
@@ -199,6 +214,8 @@ ttd$date_end[pat_censure]=val
 ttd$event[pat_censure]=0  }
 ttd$time=ttd$date_end-ttd[,2]
 ttd$time[pat_baseline]=0
+if(no_baseline=="excluded"){ttd$time[pat_baseline]=NA#################### on exclu ces patients
+ttd$event[pat_baseline]=NA}
 ttd$time[pat_fol]=1
 
 if((!is.na(death))&(sensitivity==FALSE)){
@@ -221,7 +238,7 @@ ttd$event[pat_death]=1
 }
 }
 if(sensitivity==TRUE){
-ttd$time=ttd$time/30.4375  
+ttd$time=ttd$time/30.4375
 colnames(ttd)[colnames(ttd)=="time"]=
 sub(", ",".",toString(c("time",score[i])))
 colnames(ttd)[colnames(ttd)=="event"]=
@@ -230,6 +247,7 @@ ttd$event.SA1=NA
 if(i==1){ttd$event.SA1=ttd[,ncol(ttd)-3]
 }else{ttd$event.SA1=ttd[,ncol(ttd)-2]}
 ttd$event.SA1[pat_baseline]=1
+if(no_baseline=="excluded"){ttd$event.SA1[pat_baseline]=NA}##################################################### on exclu ces patients
 ttd$event.SA1[pat_fol]=1
 colnames(ttd)[ncol(ttd)]=
 sub(", ",".",toString(c("event.SA1",score[i])))
@@ -253,17 +271,18 @@ ttd$time[pat_death]=
 Y[pat_death,colnames(Y)==death]-
 dates[pat_death,1]
 ttd$event[pat_death]=1
-} 
-ttd$time[pat_death]=ttd$time[pat_death]/30.4375  
+}
+ttd$time[pat_death]=ttd$time[pat_death]/30.4375
 colnames(ttd)[ncol(ttd)-1]=sub(", ",".",toString(c("event.SA2",score[i])))
 colnames(ttd)[ncol(ttd)]=sub(", ",".",toString(c("time.SA2",score[i])))
 ttd$event.SA3=ttd[,ncol(ttd)-1]
 ttd$event.SA3[pat_baseline]=1
+if(no_baseline=="excluded"){ttd$event.SA3[pat_baseline]=NA}   ##################################################### on exclu ces patients
 ttd$event.SA3[pat_fol]=1
 colnames(ttd)[ncol(ttd)]=sub(", ",".",toString(c("event.SA3",score[i])))
 }
 }else{
-ttd$time=ttd$time/30.4375   
+ttd$time=ttd$time/30.4375
 colnames(ttd)[colnames(ttd)=="time"]=sub(", ",".",toString(c("time",score[i])))
 colnames(ttd)[colnames(ttd)=="event"]=sub(", ",".",toString(c("event",score[i])))
 }

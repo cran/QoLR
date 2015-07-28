@@ -36,18 +36,5 @@ Maintainer: Amelie ANOTA <aanota@chu-besancon.fr>
 \seealso{
 \code{\link{TUDD}}
 }
-\examples{
-### The time until definitive deterioration of scores "QoL" and "pain" of the
-### dataqol2 data set as compared to the baseline score
-### with two MCID (5 points and 10 points)
-### and according to the treatment arm called "arm"
-### all sensitivity analyses are performed simultaneously to the main definition
-### the created file is named "file_TTD_baseline.csv" and is located 
-### in the current directory                             
-                                 
-data(dataqol2)
-write.TUDD(dataqol2,score=c("QoL","pain"),order=c(1,2),MCID=c(5,10),
-group="arm",names.group=c("arm 1","arm 2"),sensitivity=FALSE,
-file="file_TTD_baseline") 
-}
+
 

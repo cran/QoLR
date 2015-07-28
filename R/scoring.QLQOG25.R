@@ -1,5 +1,18 @@
 scoring.QLQOG25 <-
-function(X,id="",items=1:25){
+function(X,id="",time=""){
+
+items=paste("q",31:55,sep="")
+
+if(length(which(is.element(items,colnames(X))))<25){
+stop("At least one item is missing: items must be named q31 to q55");
+break
+}
+
+if(length(which(match(items,colnames(X))==sort(match(items,colnames(X)))))<25){
+stop("Items must be named q31 to q55 and presented on that order in the dataset");
+break
+}
+
 if(sum(apply(X[,items],2,is.integer))<25){
 stop("Items must be integer");
 break
@@ -14,16 +27,34 @@ if(max(X[,items],na.rm=T)>4){
 stop("Maximum possible value for items is 4");
 break
 }
-if(id!=""){
+
+if((id!="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=18)
+Y=as.data.frame(Y)
+Y[,1]=X[,id]
+Y[,2]=X[,time]
+colnames(Y)=c(id,time,"OGBI","OGDYS","OGEAT","OGRFX","OGODYN","OGPD","OGANX","OGEO","OGDM","OGTA","OGSV","OGCH","OGCO","OGSP","OGWL","OGHL")
+}
+
+if((id!="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=17)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
-
 colnames(Y)=c(id,"OGBI","OGDYS","OGEAT","OGRFX","OGODYN","OGPD","OGANX","OGEO","OGDM","OGTA","OGSV","OGCH","OGCO","OGSP","OGWL","OGHL")
-}else{
+}
+
+if((id=="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=17)
+Y=as.data.frame(Y)
+Y[,1]=X[,time]
+colnames(Y)=c(time,"OGBI","OGDYS","OGEAT","OGRFX","OGODYN","OGPD","OGANX","OGEO","OGDM","OGTA","OGSV","OGCH","OGCO","OGSP","OGWL","OGHL")
+}
+
+if((id=="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=16)
 Y=as.data.frame(Y)
-colnames(Y)=c("OGBI","OGDYS","OGEAT","OGRFX","OGODYN","OGPD","OGANX","OGEO","OGDM","OGTA","OGSV","OGCH","OGCO","OGSP","OGWL","OGHL")}
+colnames(Y)=c("OGBI","OGDYS","OGEAT","OGRFX","OGODYN","OGPD","OGANX","OGEO","OGDM","OGTA","OGSV","OGCH","OGCO","OGSP","OGWL","OGHL")
+}
 
 Y$OGBI[!is.na(X[,items[19]])]=(1-(X[!is.na(X[,items[19]]),items[19]]-1)/3)*100
 DM_OGDYS=apply(is.na(X[,items[1:3]]),1,sum)

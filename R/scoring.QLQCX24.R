@@ -1,5 +1,18 @@
 scoring.QLQCX24 <-
-function(X,id="",items=1:24){
+function(X,id="",time=""){
+
+items=paste("q",31:54,sep="")
+
+if(length(which(is.element(items,colnames(X))))<24){
+stop("At least one item is missing: items must be named q31 to q54");
+break
+}
+
+if(length(which(match(items,colnames(X))==sort(match(items,colnames(X)))))<24){
+stop("Items must be named q31 to q54 and presented on that order in the dataset");
+break
+}
+
 if(sum(apply(X[,items],2,is.integer))<24){
 stop("Items must be integer");
 break
@@ -14,16 +27,37 @@ if(max(X[,items],na.rm=T)>4){
 stop("Maximum possible value for items is 4");
 break
 }
-if(id!=""){
+
+if((id!="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=11)
+Y=as.data.frame(Y)
+Y[,1]=X[,id]
+Y[,2]=X[,time]
+colnames(Y)=c(id,time,"CXBI","CXSXA","CXSXE","CXSV","CXSE","CXLY","CXPN","CXMS","CXSW")
+}
+
+if((id!="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=10)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
-
 colnames(Y)=c(id,"CXBI","CXSXA","CXSXE","CXSV","CXSE","CXLY","CXPN","CXMS","CXSW")
-}else{
+}
+
+if((id=="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=10)
+Y=as.data.frame(Y)
+Y[,1]=X[,time]
+colnames(Y)=c(time,"CXBI","CXSXA","CXSXE","CXSV","CXSE","CXLY","CXPN","CXMS","CXSW")
+}
+
+if((id=="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=9)
 Y=as.data.frame(Y)
-colnames(Y)=c("CXBI","CXSXA","CXSXE","CXSV","CXSE","CXLY","CXPN","CXMS","CXSW")}
+colnames(Y)=c("CXBI","CXSXA","CXSXE","CXSV","CXSE","CXLY","CXPN","CXMS","CXSW")
+}
+
+
+
 DM_CXBI=apply(is.na(X[,items[15:17]]),1,sum)
 rs_CXBI=apply(X[,items[15:17]],1,sum,na.rm=TRUE)
 rs_CXBI=rs_CXBI/(3-DM_CXBI)

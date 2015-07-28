@@ -1,19 +1,17 @@
-\name{scoring.QLQLC13}
-\alias{scoring.QLQLC13}
-
+\name{scoring.QLQLMC21}
+\alias{scoring.QLQLMC21}
 \title{
-Scoring of the module EORTC QLQ-LC13
+Scoring of the module EORTC QLQ-LMC21
 }
 \description{
-A program that computes the scores of the module QLQ-LC13 for lung cancer according to the EORTC scoring manual.
+A program that computes the scores of the module QLQ-LMC21 for Liver Metastases in Colorectal Cancer according to the EORTC scoring manual.
 }
 \usage{
-scoring.QLQLC13(X, id="", time="")
+scoring.QLQLMC21(X, id = "", time="")
 }
-
 \arguments{
-  \item{X}{input data matrix or data frame with items of the EORTC QLQ-LC13 in columns. Missing values are inserted as NA.}
- \item{id}{name of the variable in the dataframe \code{X} corresponding to the patient identification number}
+  \item{X}{input data matrix or data frame with items of the EORTC QLQ-LMC21 in columns. Missing values are inserted as NA.}
+  \item{id}{name of the variable in the dataframe \code{X} corresponding to the patient identification number}
   \item{time}{name of the variable in the dataframe \code{X} corresponding to the time identification number}
 }
 
@@ -36,5 +34,8 @@ Maintainer: Amelie Anota <aanota@chu-besancon.fr>
 
 
 \references{
-Bergman B, et al. (1994). The EORTC QLQ-LC13: a modular supplement to the EORTC Core Quality of Life Questionnaire (QLQ-C30) for use in lung cancer clinical trials. EORTC Study Group on Quality of Life. Eur J Cancer 30A:635-42.
+
+Blazeby, J.M. et al. (2009). Validation of the European Organization for Research and Treatment of Cancer QLQ-LMC21 questionnaire for assessment of patient-reported outcomes during treatment of colorectal liver metastases. British Journal of Surgery, 96(3), 291-298.
+
+
 }

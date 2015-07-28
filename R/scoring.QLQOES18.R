@@ -1,5 +1,18 @@
 scoring.QLQOES18 <-
-function(X,id="",items=1:18){
+function(X,id="",time=""){
+
+items=paste("q",31:48,sep="")
+
+if(length(which(is.element(items,colnames(X))))<18){
+stop("At least one item is missing: items must be named q31 to q48");
+break
+}
+
+if(length(which(match(items,colnames(X))==sort(match(items,colnames(X)))))<18){
+stop("Items must be named q31 to q48 and presented on that order in the dataset");
+break
+}
+
 if(sum(apply(X[,items],2,is.integer))<18){
 stop("Items must be integer");
 break
@@ -14,16 +27,35 @@ if(max(X[,items],na.rm=T)>4){
 stop("Maximum possible value for items is 4");
 break
 }
-if(id!=""){
+
+if((id!="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=12)
+Y=as.data.frame(Y)
+Y[,1]=X[,id]
+Y[,2]=X[,time]
+colnames(Y)=c(id,time,"OESDYS","OESEAT","OESRFX","OESPA","OESSV","OESCH","OESDM","OESTA","OESCO","OESSP")
+}
+
+if((id!="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=11)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
-
 colnames(Y)=c(id,"OESDYS","OESEAT","OESRFX","OESPA","OESSV","OESCH","OESDM","OESTA","OESCO","OESSP")
-}else{
+}
+
+if((id=="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=11)
+Y=as.data.frame(Y)
+Y[,1]=X[,time]
+colnames(Y)=c(time,"OESDYS","OESEAT","OESRFX","OESPA","OESSV","OESCH","OESDM","OESTA","OESCO","OESSP")
+}
+
+if((id=="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=10)
 Y=as.data.frame(Y)
-colnames(Y)=c("OESDYS","OESEAT","OESRFX","OESPA","OESSV","OESCH","OESDM","OESTA","OESCO","OESSP")}
+colnames(Y)=c("OESDYS","OESEAT","OESRFX","OESPA","OESSV","OESCH","OESDM","OESTA","OESCO","OESSP")
+}
+
 DM_OESDYS=apply(is.na(X[,items[1:3]]),1,sum)
 rs_OESDYS=apply(X[,items[1:3]],1,sum,na.rm=TRUE)
 rs_OESDYS=rs_OESDYS/(3-DM_OESDYS)

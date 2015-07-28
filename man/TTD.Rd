@@ -18,7 +18,7 @@ no_baseline = "censure", no_follow = "censure", death = NA, sensitivity = FALSE)
   If \code{ref.init} is \code{"best"}, the best previous quality of life score is the reference score.
   If \code{ref.init} is \code{"previous"}, the last previous score is the reference score.}
   \item{order}{a vector equals to 1 if the deterioration corresponds to a decrease of the score, 2 otherwise}
-  \item{no_baseline}{By default, \code{no_baseline} equals to \code{"censure"} to indicate that patients with no baseline score are censured at baseline (Day 0). If \code{no_baseline} equals \code{"event"}, these patients are deteriorated since baseline}
+  \item{no_baseline}{By default, \code{no_baseline} equals to \code{"censure"} to indicate that patients with no baseline score are censured at baseline (Day 0). If \code{no_baseline} equals \code{"event"}, these patients are deteriorated since baseline.  If \code{no_baseline} equals \code{"excluded"}, these patients are excluded of the analysis}
   \item{no_follow}{By default, \code{no_follow} equals to \code{"censure"} to indicate that patients with no follow-up score are censured just after baseline (Day 1). If \code{no_follow} equals to \code{"event"}, these patients are deteriorated just after baseline}
   \item{death}{missing if patients who died without experienced a deterioration are censored at the time of the last quality of life assessment, equals to the name of the death date in the dataframe \code{X} otherwise}
   \item{sensitivity}{Boolean equals to \code{FALSE} by default. If \code{sensitivity} is \code{TRUE}, then all sensitivity analyses are performed, integrating patients with no baseline or with no follow up as event (SA1), death as event (SA2) and simultaneously no baseline, no follow and death (SA3)}
@@ -70,10 +70,26 @@ Maintainer: Amelie Anota <aanota@chu-besancon.fr>
 }
 
 \examples{
-data(dataqol2)
-# deterioration of 5 points at least as compared to the baseline score for
-# the score "QoL" and the score "pain"
-TTD(dataqol2,score=c("QoL","pain"),order=1:2,MCID=5)
+data(dataqol)
+# Estimation of the scores using the 'scoring.QLQC30' function:
+score_dataqol=scoring.QLQC30(dataqol,id="Id",time="time")
+# Merge of "score_dataqol" dataframe with the important 
+# variables of the dataqol dataframe as follows:
+info=dataqol[,c("Id","time","date","death","Arm")]
+dataqol_final=merge(score_dataqol,info,by=c("Id","time"))
+
+# Then we reorganized the obtained "dataqol_final" dataset in order that
+# the "date" variable appeared in the third position:
+dataqol_final=dataqol_final[,c(1:2,18,3:17,19:20)]
+
+# Finally, in order to apply the "TTD" function, the dataset has to be sorted by
+# patient's identification number "Id" and HRQoL measures ("time"):
+dataqol_final=dataqol_final[order(dataqol_final$time),]
+dataqol_final=dataqol_final[order(dataqol_final$Id),]
+
+# Time to "QL" score deterioration with a minimal clinically important difference
+# of 5 points at least as compared to the baseline score:
+ttd1=TTD(dataqol_final, score="QL", MCID=5)
 
 }
 

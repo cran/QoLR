@@ -26,7 +26,7 @@ group = NULL, names.group, sensitivity = TRUE, file = "")
   \item{sensitivity}{Boolean equals to \code{TRUE} by default. If \code{sensitivity} is \code{TRUE}, then all sensitivity analyses are performed, integrating patients with no baseline or with no follow up as event, death as event and simultaneously no baseline, no follow and death}
   \item{file}{the name of the csv file to create with the results of the time to deterioration analysis}
 }
-\value{this function does not return value in R console but create a csv file with the results of the time to deterioration analysis
+\value{this function does not return value in R console but creates a csv file with the results of the time to deterioration analysis
 }
 
 \author{Amelie ANOTA
@@ -43,9 +43,25 @@ Maintainer: Amelie ANOTA <aanota@chu-besancon.fr>
 ### all sensitivity analyses are performed simultaneously to the main definition
 ### the created file is named "file_TTD_baseline.csv" and is located 
 ### in the current directory                             
-                                 
-data(dataqol2)
-write.TTD(dataqol2,score=c("QoL","pain"),order=c(1,2),MCID=c(5,10),
-group="arm",names.group=c("arm 1","arm 2"),sensitivity=FALSE,
-file="file_TTD_baseline") 
+            
+data(dataqol)
+# Estimation of the scores using the 'scoring.QLQC30' function:
+score_dataqol=scoring.QLQC30(dataqol,id="Id",time="time")
+# Merge of "score_dataqol" dataframe with the important 
+# variables of the dataqol dataframe as follows:
+info=dataqol[,c("Id","time","date","death","Arm")]
+dataqol_final=merge(score_dataqol,info,by=c("Id","time"))
+
+# Then we reorganized the obtained \code{dataqol_final} dataset in order that
+# the "date" variable appeared in the third position:
+dataqol_final=dataqol_final[,c(1:2,18,3:17,19:20)]
+
+# Finally, in order to apply the "TTD" function, the dataset has to be sorted by
+# patient's identification number "Id" and HRQoL measures ("time"):
+dataqol_final=dataqol_final[order(dataqol_final$time),]
+dataqol_final=dataqol_final[order(dataqol_final$Id),]
+                     
+###write.TTD(dataqol_final,score=c("QL","PA"),order=c(1,2),MCID=c(5,10),
+###group="Arm",names.group=c("Arm 1","Arm 2"),sensitivity=FALSE,
+###file="file_TTD_baseline") 
 }

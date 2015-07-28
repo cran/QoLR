@@ -1,0 +1,389 @@
+---
+title: "Longitudinal analysis of health-related quality of life data using the `R` package `QoLR`"  
+
+
+references:
+- id: fayers1999eortc
+  title: EORTC QLQ-C30 Scoring Manual
+  author:
+  - family: Fayers P, et al.
+  type: article-journal
+  publisher: EORTC
+  issued:
+    year: 1999
+    
+- id: aaronson1993european
+  title: The European Organization for Research and Treatment of Cancer QLQ-C30 A Quality of life Instrument for Use in International Clinical Trials in Oncology
+  author:
+  - family: Aaronson NK, et al.
+  type: article-journal
+  publisher: Journal of the National Cancer Institute
+  page: 365-376
+  volume: 85
+  issue: 5
+  issued:
+    year: 1993   
+    
+- id: hamidou2011time
+  title: Time to Deterioration in Quality of Life Score as a Modality of Longitudinal Analysis in Patients with Breast Cancer
+  author: 
+  - family: Hamidou Z, et al.
+  type: article-journal
+  publisher: The Oncologist
+  page: 1458-1468
+  volume: 16
+  issue: 10
+  issued:
+    year: 2011
+
+- id: bonnetain2010time
+  title: Time Until Definitive Quality of Life Score Deterioration as a Means of Longitudinal Analysis for Treatment Trials in Patients with Metastatic Pancreatic Adenocarcinoma
+  author: 
+  - family: Bonnetain F, et al.
+  type: article-journal
+  publisher: European Journal of Cancer
+  page: 2753-2762
+  volume: 46
+  issue: 15
+  issued:
+    year: 2010
+    
+- id: anota2013time
+  title: Time to Health-Related Quality of Life Score Deterioration as a Modality of Longitudinal Analysis for Health-Related Quality of Life Studies in Oncology Do We Need RECIST for Quality of Life to Achieve Standardization?
+  author: 
+  - family: Anota A, et al.
+  type: article-journal
+  publisher: Quality of Life Research
+  page: 5-18
+  volume: 24
+  issue: 1
+  issued:
+    year: 2015
+
+    
+output: html_document
+theme: zenburn
+geometry: margin=1in
+vignette: >
+  %\VignetteIndexEntry{Using QoLR package}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+  %!\VignetteEncoding{UTF-8}
+
+  
+  %\usepackage{amssymb,amsmath}
+ 
+  
+  
+---
+
+**Amelie Anota (1), Caroline Bascoul-Mollevi (2), Franck Bonnetain (1)**
+
+(1) Quality of Life in Oncology clinical research Platform and Methodology and Quality of Life in Oncology Unit (EA 3181), University Hospital of Besancon, France
+
+(2) Biostatistics Unit, Montpellier Cancer Institute, Montpellier, France
+
+See also: [UMQVC web site] [id]
+
+
+
+# Scoring the EORTC HRQoL questionnaires
+The first application of the `QoLR` package is the estimation of the scores of most of the EORTC health-related quality of life (HRQOL) questionnaires like the QLQ-C30 cancer specific questionnaire [@aaronson1993european]. The method to calculate the scores of the EORTC HRQOL questionnaire is defined in the EORTC scoring manual [@fayers1999eortc]. All the modules implemented in the `QoLR` package are described in the next Table 1.
+
+
+
+Functions|  Arguments | Description
+------------- | ------------- | -------------
+`scoring.QLQC30` |`(data, id, time)` |Scoring of the EORTC QLQ-C30 questionnaire for cancer patients
+`scoring.QLQC15PAL` |`(data, id, time)`|Scoring of the EORTC QLQ-C15-PAL questionnaire for palliative care 
+`scoring.QLQBN20` |`(data, id, time)`|Scoring of the EORTC QLQ-BN20 brain cancer module
+`scoring.QLQBR23` |`(data, id, time)`|Scoring of the EORTC QLQ-BR23 breast cancer module
+`scoring.QLQCR29` |`(data, id, time)`|Scoring of the EORTC QLQ-CR29 colorectal module
+`scoring.QLQCX24` |`(data, id, time)`|Scoring of the EORTC QLQ-CX24 cervical cancer module
+`scoring.QLQELD14` |`(data, id, time)`|Scoring of the EORTC QLQ-ELD14 module for elderly cancer patients
+`scoring.QLQEN24` |`(data, id, time)`|Scoring of the EORTC QLQ-EN24 endometrial cancer module
+`scoring.QLQHCC18` |`(data, id, time)`|Scoring of the EORTC QLQ-HCC18 hepatocellular carcinoma module
+`scoring.QLQHN35` |`(data, id, time)`|Scoring of the EORTC QLQ-H&N35 head and neck cancer module 
+`scoring.QLQINFO25` |`(data, id, time)`|Scoring of the EORTC QLQ-INFO25 information module
+`scoring.QLQLC13` |`(data, id, time)`|Scoring of the EORTC QLQ-LC13 lung cancer module
+`scoring.QLQLMC21` |`(data, id, time)`|Scoring of the EORTC QLQ-LMC21 liver metastases in colorectal cancer module  
+`scoring.QLQMY20` |`(data, id, time)`|Scoring of the EORTC QLQ-MY20 myeloma module
+`scoring.QLQOES18`|`(data, id, time)`|Scoring of the EORTC QLQ-OES18 oesophageal cancer module
+`scoring.QLQOG25` |`(data, id, time)`|Scoring of the EORTC QLQ-OG25 oesophago-gastric module
+`scoring.QLQOV28` |`(data, id, time)`|Scoring of the EORTC QLQ-OV28 ovarian module
+`scoring.QLQPR25` |`(data, id, time)`|Scoring of the EORTC QLQ-PR25 prostate cancer module
+`scoring.QLQSTO22` |`(data, id, time)`|Scoring of the EORTC QLQ-STO22 gastric module
+`scoring.INPATSAT32` |`(data, id, time)`|Scoring of the EORTC IN-PATSAT32 satisfaction with care questionnaire
+
+
+**Table 1**: Summary of the functions in the `QoLR` package for the scoring of the EORTC questionnaires
+
+The first argument of the function `scoring.QLQC30` and other functions for scoring is the name of the dataset with the items answers to the questionnaire (`X` parameter). The patient's identification number can be specified in `id` parameter. A time identification number can also be specified in `time` parameter if a longitudinal assessment of HRQoL is performed.  
+The items have to be named `q1` to `qi` for the QLQ-C30 (i=30), QLQ-C15-PAL (i=15) and IN-PATSAT32 (i=32) questionnaire. For all other supplementary modules, items have to be named `q31` to `qi`, because these modules have to be administered in conjunction to the QLQ-C30 core questionnaire.
+Moreover, the order of the items in the dataset has to be respected.
+
+For example, the `dataqol` dataset includes in the `QoLR` package contains the answers to the 30 items of the QLQ-C30, named `q1` to `q30`, for 40 patients with a longitudinal HRQOL assessment. A sample of the `dataqol` dataset is given below.
+
+
+
+
+
+```{r}
+library(QoLR)
+data(dataqol)
+head(dataqol)
+```
+The `scoring.QLQC30` function can thus be applied to estimate the HRQoL scores.
+The result is a data frame: each variable corresponds to a HRQOL score. The name of the scores are the same than those used in the EORTC scoring manual [@fayers1999eortc]. If a patient's identification number and/or a time's identification number was (were) specified in the `id` parameter and `time` parameter respectively, then this (these) variable(s) is (are) replicated in the data frame obtained.
+
+```{r}
+score_dataqol=scoring.QLQC30(dataqol,id="Id", time="time")
+head(round(score_dataqol))
+```
+
+# Time to HRQoL score deterioration
+
+The second application of the `QoLR` package is the estimation of the time to HRQoL score deterioration [@anota2013time]. Both time to first deterioration [@hamidou2011time] and time until definitive deterioration [@bonnetain2010time] were implemented.
+
+
+
+
+## Estimate the time to HRQoL score deterioration
+
+### Time to deterioration 
+
+The function `TTD` alows to estimate the time to first deterioration [@hamidou2011time]. Several definitions were implemented depending on the reference score, the minimal clinically important difference, including or not patients with no baseline score and/or no follow-up score as an event, including or not death as an event. 
+
+To apply this function, the dataset must respect a general structure. The dataset `X` must be in long format with the following variables in this order:
+
+1. Item Patient's identification number;
+2. Variable identifying the HRQOL assessment number;
+3. Date of HRQOL measure;
+4. HRQOL scores;
+5. Other variables like the date of death or the treatment arm.
+
+
+
+The dataset must also be sorted by patient's identification number and HRQOL measurement time. Dates must be in Julian format (i.e., number of days since a reference time point).
+
+Table 2 summarizes the arguments of this function and their possible values.
+
+Arguments|  Values 
+------------- | ------------- 
+`X` | matrix or data frame
+`score` | vector
+`MCID` | scalar
+`ref.init` | = `"baseline"` (default)/= `"best"` /= `"previous"`
+`order` | = 1 (default) /= 2
+`no_baseline` | = `"censure"` (default)/= `"event"` /= `"excluded"`
+`no_follow` | = `"censure"` (default)/= `"event"`
+`death`  | = `NA` (default) or vector
+`sensitivity`	| = `FALSE` (default)/= `TRUE`
+
+**Table 2:** Arguments of the `TTD` function
+
+The result of this function is a data frame with:
+
+* the patient's identification number;
+* a dummy variable called `event`equals to 1 if the patient is deteriorated, 0 if the patient is censored;
+* a variable called `time` and equals to the time to censure or the time to the deterioration _in months_.
+
+Like both variables `event` and `time` are created for each score treated and each definition of TTD, we added the name of the corresponding score as a suffix. As example, if `score = c("score1","score2")`.
+Then four variables are created: `event.score1`, `time.score1`, `event.score2` and `time.score2`.
+
+Moreover, if `sensitivity == TRUE`, then added variables `event` and `time` are created:
+
+* `event.SA1` for sensitivity analysis #1: `event` and `event.SA1` are equals except for patients with no baseline score and those with no follow-up score, `event.SA1=1` while `event = 0`. Like `time.SA1 == time`, then `time.SA1` was omitted;
+* `event.SA2` and `time.SA2` for sensitivity analysis #2;
+* `event.SA3` for sensitivity analysis #3. Like `time.SA3 == time.SA2`, then  `time.SA3` was omitted.
+
+
+To apply the `TTD` function on the data from `dataqol`, we have to first modify the `scoring_dataqol` dataframe in order to respect the requested format of the `TTD` function. 
+
+
+The date of HRQOL assessment as well as the treatment arm and date of death are available in the `dataqol` dataset. We thus merged the `score_dataqol` dataframe with the important variables of the `dataqol` dataframe as follows:
+
+```{r}
+info=dataqol[,c("Id","time","date","death","Arm")]
+dataqol_final=merge(score_dataqol,info,by=c("Id","time"))
+```
+
+Then we reorganized the obtained `dataqol_final` dataset in order that the `date` variable appeared in the third position:
+
+```{r}
+dataqol_final=dataqol_final[,c(1:2,18,3:17,19:20)]
+head(round(dataqol_final))
+```
+
+
+Finally, the dataset has to be sorted by patient's identification number (`Id`) and HRQoL measures (`time`):
+
+```{r}
+dataqol_final=dataqol_final[order(dataqol_final$time),]
+dataqol_final=dataqol_final[order(dataqol_final$Id),]
+head(round(dataqol_final))
+```
+
+To begin, we can study the time to deterioration as compared to the baseline `QL` score (`ref.init = "baseline"`) with at least 5-point MCID (`MCID = 5`) and considering patients with no baseline or with no follow-up measure censoring at baseline or just after baseline (`no_baseline = "censure"` and `no_follow = "censure"`). 
+
+The score `QL` corresponds to a measure of global HRQOL with a high score represents a high global HRQoL level. In this way, a deterioration corresponds to a decrease of the score (`order = 1`). 
+
+Like the values of these parameters are the default values except for the MCID, we do not need to specify their values and the function can be applied as follows:
+
+```{r}
+ttd1=TTD(dataqol_final, score="QL", MCID=5)
+head(ttd1)
+```
+
+The result is a data frame with the identification number of patients (`Id`), the time to deterioration or to censure in months (`time.QL`) and a dummy variable (`event.QL`) indicating if the patient is deteriorated (`event.QL =1`) or not (`event.QL =0`). The suffix "`QL`" corresponds to the name of the treated score.
+
+If we want to consider patients with no baseline or no follow up as events, we have to fix the parameters `no_baseline` and `no_follow` to `"event"` as follows:
+
+```{r}
+ttd2=TTD(dataqol_final, score="QL", order=1, MCID=5, no_baseline="event",no_follow="event")
+head(ttd2)
+```
+
+To consider death as an event, we have to specify the value of the `death` parameter:
+```{r}
+ttd3=TTD(dataqol_final, score="QL", MCID=5, death="death")
+head(ttd3)
+```
+
+You can obtain directly all the sensitivity analyses along with the primary analysis in one application of the function `TTD` by specify `sensitivity = TRUE`:
+
+```{r}
+ttd4=TTD(dataqol_final, score="QL", MCID=5, death="death", sensitivity=TRUE)
+head(ttd4)
+```
+
+You can also change the reference score considering the best previous HRQOL score or the previous score (i.e., immediately preceding score) as reference score by specifying `ref.init="best"` or `ref.init="previous"` respectively.
+
+In the following example, the reference score is the best previous `QL` score:
+```{r}
+ttd5=TTD(dataqol_final, score="QL", MCID=5, ref.init ="best")
+head(ttd5)
+```
+
+
+
+
+The function`TTD()` can handle simultaneously many scores, functional and/or symptomatic scores. You have to define the name of the studied scores in the `score` parameter and the order to considered (decrease or increase): `order = 1` for the global health status or functional scale and `order = 2` for the symptomatic scales.
+Variables `event` and `time` are then created for each score with the score name as a suffix. 
+
+The following example represents the application of the `TTD` function as compared to the baseline score with a 5-point MCID for `QL`, `PF` (with `order = 1` for both scores) and   `FA` (with `order = 2`): 
+
+```{r}
+ttd6=TTD(dataqol_final, score=c("QL","PF","FA"), order=c(1,1,2), MCID=5)
+head(ttd6)
+```
+
+
+### Time until definitive deterioration
+
+The time until definitive deterioration is studied with the `TUDD` function, quite similar to the `TTD` function. 
+
+The next Table 3 summarizes the arguments of this function. 
+
+
+Arguments|  Values 
+------------- | ------------- 
+`X` | matrix or data frame
+`score` | vector
+`MCID` | vector
+`ref.init` | = `"baseline"` (default)/= `"best"` /= `"previous"`
+`ref.def` | = `"def1"` (default)/= `"def2"` /= `"def3"`
+`order` | = 1 (default) /= 2
+`no_baseline` | = `"censure"` (default)/= `"event"` /= `"excluded"`
+`no_follow` | = `"censure"` (default)/= `"event"`
+`death`  | = `NA` (default) or vector
+`sensitivity`  | = `FALSE` (default)/= `TRUE`
+
+**Table 3** Arguments of the `TUDD` function
+
+Only one supplementary parameter as compared to `TTD()` function is available: the parameter `ref.def` in which you can specify the notion of "definitive deterioration" according to the three proposed definition in section 2 :
+
+* With no further improvement of k points at least as compared to the reference score (`ref.def = "def1"`);
+* with maintaining this deterioration of at least k points for all following scores, i.e., the deterioration is observed for all the following scores (`ref.def = "def2"`);
+* with no further improvement of at least k points as compared to the score qualifying the deterioration (`ref.def = "def3"`).
+
+
+Moreover, in this function, you can performed sensitivity analysis according to the MCID, thus the `MCID` parameter is a vector, not a scalar.
+
+
+
+By default, the deterioration is defined as a deterioration with a k-point MCID as compared with the baseline score with no further improvement of of more than k points as compared to the baseline score [@bonnetain2010time]. The result of the application of this function is fairly similar to the one of the `TTD`. However, for `TUDD`, the value of the MCID is also specified in the variables name `time` and `event`. 
+
+The result of the reference definition of TUDD is the following:
+
+```{r}
+tudd1=TUDD(dataqol_final, score="QL", MCID=5)
+head(tudd1)
+```
+
+The deterioration can also be definitive as compared to the deterioration observed, *i.e.*, with no further improvement of 5-point MCID as compared to the score obtained at the time of the first deterioration. This definition is applied by setting the parameter `ref.def` to the value `"def3"`:
+
+```{r}
+tudd2=TUDD(dataqol_final, score = "QL", MCID = 5, ref.def = "def3")
+head(tudd2)
+```
+
+
+Like we did for the time to deterioration, all the sensitivity analyses can be performed simultaneously with the primary definition of TUDD. Moreover, many minimal clinically important difference (MCID) can be specified. An indicator of the MCID value is added as a suffix of the resulting parameters `event` and `time`:
+
+```{r}
+tudd3=TUDD(dataqol_final, score="PF", MCID=c(5,10), sensitivity=T)
+head(round(tudd3,2))
+```
+
+In this application, death has not been taken into account. Only two sensitivity analyses were performed: the first one regarding patients with no baseline or no follow-up measure and the second one on the MCID value.
+
+## Plot the Kaplan-Meier survival curve
+
+The `plotTTD` function allows to obtain the time to deterioration curves estimated according to the Kaplan-Meier method for all patients or by treatment arm (only two groups are allowed). The `time` parameter is a vector equals to the time to deterioration or the time to censure and the `event` parameter is a dummy vector equals to 1 if the patient is deteriorated and 0 if not.
+
+Some other information can be added in option like at regular time point `t` for all patients or by treatment arm:
+
+* number of patients at risk (`nrisk=T`);
+* cumulative number of events (`nevents=T`).
+
+
+
+In the case of TTD curves by treatment arm you have to give the name of the group variable in the `group` parameter and the label of the each group you want to print in the  `group.names` parameter, hazard ratio with 95% confidence interval and log-rank test can be added on the graph (`info = TRUE`) at a determined position specified by the user (`pos.info = c()`).
+
+`xlab` and `ylab` correspond to the name of the abscissa and ordinate axis. The Table 4 summarizes the arguments of this function.
+
+
+Arguments|  Values 
+------------- | ------------- 
+`time` | vector
+`event` | dummy vector
+`group` | = `NULL` (default)/ vector
+`nrisk` | = `TRUE` (default)/= `FALSE`
+`nevent` | = `FALSE` (default)/= `TRUE`
+`group.names` | = `NULL`/ vector
+`t` | vector
+`info` | = `FALSE` (default)/= `TRUE`
+`pos.info` | = `NULL`/ vector
+`xlab` | = character
+`ylab` | = character
+
+**Table 3** Arguments of the `plotTTD` function
+
+AS example, the Figure 1 corresponds to the TUDD of `QL` score as compared to the baseline score with a 5-point MCID according treatment arm (`Arm` parameter). In this graph, we printed the number of patients still at risk at each time point according to treatment arm (`nrisk=T`). Moreover, the result of the log-rank test and the hazard ratio of Arm 2 vs. Arm 1 is also printed (`info=T`, `pos.info=c(6,0.8)`). The hazard ratio (Arm 2 vs. Arm 1) equals to $2.86$ with 95% confidence interval $(1.16-7.09)$ and the result of the log-rank test is $p=0.018$.
+
+
+```{r plotTTD, fig.width=5.5, fig.align='center'}
+tudd1=TUDD(dataqol_final, score="QL", MCID=5,ref.init="baseline",ref.def="def1")
+ttd_1=merge(tudd1,unique(dataqol_final[,c("Id","Arm")]))
+plotTTD(ttd_1$time.5.QL,ttd_1$event.5.QL,ttd_1$Arm,nrisk=T,nevent=F,
+group.names=c("Arm 1","Arm 2"), t=seq(0,10,2),info=T,pos.info=c(6,0.8),
+xlab="time (months)", ylab="probability (%)")
+```
+
+
+
+
+# References
+
+[id]: http://www.umqvc.org/en/tool/the-r-package-qolr-analysis-of-health-related-quality-of-life-in-oncology-6.html "Title"

@@ -7,12 +7,12 @@ Scoring of the module EORTC QLQ-OES18
 A program that computes the scores of the module QLQ-OES18 for oesophageal cancer according to the EORTC scoring manual.
 }
 \usage{
-scoring.QLQOES18(X, id="", items = 1:18)
+scoring.QLQOES18(X, id="", time="")
 }
 \arguments{
   \item{X}{input data matrix or data frame with items of the EORTC QLQ-OES18 in columns. Missing values are inserted as NA.}
   \item{id}{name of the variable in the dataframe \code{X} corresponding to the patient identification number}
-  \item{items}{a vector which indicates the positions of the 18 items, in the correct order. By default items columns 1 to 18 of \code{X}}
+  \item{time}{name of the variable in the dataframe \code{X} corresponding to the time identification number}
 }
 
 \details{
@@ -21,7 +21,7 @@ The scores are generated according to the EORTC scoring guidelines. Simple imput
 }
 
 \value{
-  \item{Y}{a data frame with the \code{id} variable and the score obtained for each dimension. Each score is represented by one column of \code{Y}. The names of the scores are those proposed in the scoring manual. If there is no \code{id} variable in the dataframe \code{X}, then \code{Y} only contains the scores}
+  \item{Y}{a data frame with the \code{id} and \code{time} variables of dataframe \code{X} and the score obtained for each dimension. Each score is represented by one column of \code{Y}. The names of the scores are those proposed in the scoring manual. If \code{id} and \code{time} parameters are not specified, then \code{Y} only contains the scores}
 }
 
 \author{

@@ -1,5 +1,18 @@
 scoring.QLQCR29 <-
-function(X,id="",items=1:29){
+function(X,id="",time=""){
+
+items=paste("q",31:59,sep="")
+
+if(length(which(is.element(items,colnames(X))))<29){
+stop("At least one item is missing: items must be named q31 to q59");
+break
+}
+
+if(length(which(match(items,colnames(X))==sort(match(items,colnames(X)))))<29){
+stop("Items must be named q31 to q59 and presented on that order in the dataset");
+break
+}
+
 if(sum(apply(X[,items],2,is.integer))<29){
 stop("Items must be integer");
 break
@@ -14,16 +27,37 @@ if(max(X[,items],na.rm=T)>4){
 stop("Maximum possible value for items is 4");
 break
 }
-if(id!=""){
+
+if((id!="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=25)
+Y=as.data.frame(Y)
+Y[,1]=X[,id]
+Y[,2]=X[,time]
+colnames(Y)=c(id,time,"BI","ANX","WEI","SEXM","SEXW","UF","BMS","SF","UI","DY","AP","BP","BF","DM","HL","TA","FL","FI","SS","EMB","STO","IMP","DYS")
+}
+
+if((id!="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=24)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
-
 colnames(Y)=c(id,"BI","ANX","WEI","SEXM","SEXW","UF","BMS","SF","UI","DY","AP","BP","BF","DM","HL","TA","FL","FI","SS","EMB","STO","IMP","DYS")
-}else{
+}
+
+if((id=="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=24)
+Y=as.data.frame(Y)
+Y[,1]=X[,time]
+colnames(Y)=c(time,"BI","ANX","WEI","SEXM","SEXW","UF","BMS","SF","UI","DY","AP","BP","BF","DM","HL","TA","FL","FI","SS","EMB","STO","IMP","DYS")
+}
+
+if((id=="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=23)
 Y=as.data.frame(Y)
-colnames(Y)=c("BI","ANX","WEI","SEXM","SEXW","UF","BMS","SF","UI","DY","AP","BP","BF","DM","HL","TA","FL","FI","SS","EMB","STO","IMP","DYS")}
+colnames(Y)=c("BI","ANX","WEI","SEXM","SEXW","UF","BMS","SF","UI","DY","AP","BP","BF","DM","HL","TA","FL","FI","SS","EMB","STO","IMP","DYS")
+}
+
+
+
 DM_BI=apply(is.na(X[,items[15:17]]),1,sum)
 rs_BI=apply(X[,items[15:17]],1,sum,na.rm=TRUE)
 rs_BI=rs_BI/(3-DM_BI)

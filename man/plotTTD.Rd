@@ -46,16 +46,37 @@ Maintainer: Amelie Anota <aanota@chu-besancon.fr>
 
 
 \examples{
-# Kaplan-Meier survival curve of the Time until definitive deterioration
-# of the score "QoL" with a minimal clinically important difference of 5 points
-# as compared to the baseline score
-#tudd1=TUDD(dataqol2, score="QoL", MCID=5,ref.init="baseline",ref.def="def1")
-#ttd_1=merge(tudd1,unique(dataqol2[,c("id","arm")]))
-## In the next graph, we added the number of patients at risk at time t
-## and the result of the Log Rank Test and the Univariate Hazard Ratio
-## of arm 2 vs. arm 1
-#plotTTD(ttd_1$time.5.QoL,ttd_1$event.5.QoL,ttd_1$arm,nrisk=T,nevent=F,
-#group.names=c("arm 1","arm 2"),t=seq(0,8,2),info=T,pos.info=c(6,0.8),
-#xlab="time (months)",ylab="probability (%)")
+#data(dataqol)
+## Estimation of the scores using the 'scoring.QLQC30' function:
+#score_dataqol=scoring.QLQC30(dataqol,id="Id",time="time")
+## Merge of "score_dataqol" dataframe with the important 
+## variables of the dataqol dataframe as follows:
+#info=dataqol[,c("Id","time","date","death","Arm")]
+#dataqol_final=merge(score_dataqol,info,by=c("Id","time"))
+
+## Then we reorganized the obtained "dataqol_final" dataset in order that
+## the "date" variable appeared in the third position:
+#dataqol_final=dataqol_final[,c(1:2,18,3:17,19:20)]
+
+## Finally, in order to apply the "TTD" function, the dataset has to be sorted by
+## patient's identification number "Id" and HRQoL measures ("time"):
+#dataqol_final=dataqol_final[order(dataqol_final$time),]
+#dataqol_final=dataqol_final[order(dataqol_final$Id),]
+
+
+## The following Figure corresponds to the TUDD of QoL score as compared to the
+## baseline score with a 5-point MCID according treatment arm (arm effect).
+## In this graph, we printed the number of patients still at risk at each time
+## point according to treatment arm (nrisk=T). Moreover, the result of the log-rank
+## test and the Hazard Ratio of arm 2 vs. arm 1 is also printed (info=T, pos.info=c(5,0.8)).
+## The Hazard Ratio (arm 2 vs. arm 1) equals to 1.20 with 95% confidence interval
+## (0.69-2.09) and the result of the log-rank test is p=0.523.
+
+#tudd1=TUDD(dataqol_final, score="QL", MCID=5,ref.init="baseline",ref.def="def1")
+#ttd_1=merge(tudd1,unique(dataqol_final[,c("Id","Arm")]))
+#plotTTD(ttd_1$time.5.QL,ttd_1$event.5.QL,ttd_1$Arm,nrisk=T,nevent=F,
+#group.names=c("Arm 1","Arm 2"), t=seq(0,10,2),info=T,pos.info=c(6,0.8),
+#xlab="time (months)", ylab="probability (%)")
+
 }
 

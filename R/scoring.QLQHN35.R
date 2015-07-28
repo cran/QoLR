@@ -1,5 +1,18 @@
 scoring.QLQHN35 <-
-function(X,id="",items=1:35){
+function(X,id="",time=""){
+
+items=paste("q",31:65,sep="")
+
+if(length(which(is.element(items,colnames(X))))<35){
+stop("At least one item is missing: items must be named q31 to q65");
+break
+}
+
+if(length(which(match(items,colnames(X))==sort(match(items,colnames(X)))))<35){
+stop("Items must be named q31 to q65 and presented on that order in the dataset");
+break
+}
+
 if(sum(apply(X[,items],2,is.integer))<35){
 stop("Items must be integer");
 break
@@ -14,16 +27,41 @@ if(max(X[,items],na.rm=T)>4){
 stop("Maximum possible value for items is 4");
 break
 }
-if(id!=""){
+
+
+if((id!="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=20)
+Y=as.data.frame(Y)
+Y[,1]=X[,id]
+Y[,2]=X[,time]
+colnames(Y)=c(id,time,"HNPA","HNSW","HNSE","HNSP","HNSO","HNSC","HNSX","HNTE","HNOM","HNDR","HNSS","HNCO","HNFI","HNPK","HNNU","HNFE","HNWL","HNWG")
+}
+
+if((id=="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=19)
+Y=as.data.frame(Y)
+Y[,1]=X[,time]
+colnames(Y)=c(time,"HNPA","HNSW","HNSE","HNSP","HNSO","HNSC","HNSX","HNTE","HNOM","HNDR","HNSS","HNCO","HNFI","HNPK","HNNU","HNFE","HNWL","HNWG")
+}
+
+if((id!="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=19)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
-
 colnames(Y)=c(id,"HNPA","HNSW","HNSE","HNSP","HNSO","HNSC","HNSX","HNTE","HNOM","HNDR","HNSS","HNCO","HNFI","HNPK","HNNU","HNFE","HNWL","HNWG")
-}else{
+}
+
+if((id=="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=18)
 Y=as.data.frame(Y)
-colnames(Y)=c("HNPA","HNSW","HNSE","HNSP","HNSO","HNSC","HNSX","HNTE","HNOM","HNDR","HNSS","HNCO","HNFI","HNPK","HNNU","HNFE","HNWL","HNWG")}
+colnames(Y)=c("HNPA","HNSW","HNSE","HNSP","HNSO","HNSC","HNSX","HNTE","HNOM","HNDR","HNSS","HNCO","HNFI","HNPK","HNNU","HNFE","HNWL","HNWG")
+}
+
+
+
+
+
+
 DM_HNPA=apply(is.na(X[,items[1:4]]),1,sum)
 rs_HNPA=apply(X[,items[1:4]],1,sum,na.rm=TRUE)
 rs_HNPA=rs_HNPA/(4-DM_HNPA)

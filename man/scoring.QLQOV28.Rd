@@ -1,19 +1,17 @@
-\name{scoring.QLQLC13}
-\alias{scoring.QLQLC13}
-
+\name{scoring.QLQOV28}
+\alias{scoring.QLQOV28}
 \title{
-Scoring of the module EORTC QLQ-LC13
+Scoring of the module EORTC QLQ-OV28
 }
 \description{
-A program that computes the scores of the module QLQ-LC13 for lung cancer according to the EORTC scoring manual.
+A program that computes the scores of the module QLQ-OV28 for ovarian cancer according to the EORTC scoring manual.
 }
 \usage{
-scoring.QLQLC13(X, id="", time="")
+scoring.QLQOV28(X, id = "", time="")
 }
-
 \arguments{
-  \item{X}{input data matrix or data frame with items of the EORTC QLQ-LC13 in columns. Missing values are inserted as NA.}
- \item{id}{name of the variable in the dataframe \code{X} corresponding to the patient identification number}
+  \item{X}{input data matrix or data frame with items of the EORTC QLQ-OV28 in columns. Missing values are inserted as NA.}
+  \item{id}{name of the variable in the dataframe \code{X} corresponding to the patient identification number}
   \item{time}{name of the variable in the dataframe \code{X} corresponding to the time identification number}
 }
 
@@ -35,6 +33,9 @@ Maintainer: Amelie Anota <aanota@chu-besancon.fr>
 }
 
 
+
 \references{
-Bergman B, et al. (1994). The EORTC QLQ-LC13: a modular supplement to the EORTC Core Quality of Life Questionnaire (QLQ-C30) for use in lung cancer clinical trials. EORTC Study Group on Quality of Life. Eur J Cancer 30A:635-42.
+
+Greimel E., et al. (2003). An international field study of the reliability and validity of a disease-specific questionnaire module (the QLQ-OV28) in assessing the quality of life of patients with ovarian cancer. European Journal of Cancer, 39(10), 1402-1408.
+
 }

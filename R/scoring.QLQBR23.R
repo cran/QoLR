@@ -1,5 +1,19 @@
 scoring.QLQBR23 <-
-function(X,id="",items=1:23){
+function(X,id="",time=""){
+
+items=paste("q",31:53,sep="")
+
+if(length(which(is.element(items,colnames(X))))<23){
+stop("At least one item is missing: items must be named q31 to q53");
+break
+}
+
+if(length(which(match(items,colnames(X))==sort(match(items,colnames(X)))))<23){
+stop("Items must be named q31 to q53 and presented on that order in the dataset");
+break
+}
+
+
 if(sum(apply(X[,items],2,is.integer))<23){
 stop("Items must be integer");
 break
@@ -14,16 +28,37 @@ if(max(X[,items],na.rm=T)>4){
 stop("Maximum possible value for items is 4");
 break
 }
-if(id!=""){
+
+if((id!="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=10)
+Y=as.data.frame(Y)
+Y[,1]=X[,id]
+Y[,2]=X[,time]
+colnames(Y)=c(id,time,"BRBI","BRSEF","BRSEE","BRFU","BRST","BRBS","BRAS","BRHL")
+}
+
+if((id!="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=9)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
-
 colnames(Y)=c(id,"BRBI","BRSEF","BRSEE","BRFU","BRST","BRBS","BRAS","BRHL")
-}else{
+}
+
+if((id=="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=9)
+Y=as.data.frame(Y)
+Y[,1]=X[,time]
+colnames(Y)=c(time,"BRBI","BRSEF","BRSEE","BRFU","BRST","BRBS","BRAS","BRHL")
+}
+
+if((id=="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=8)
 Y=as.data.frame(Y)
-colnames(Y)=c("BRBI","BRSEF","BRSEE","BRFU","BRST","BRBS","BRAS","BRHL")}
+colnames(Y)=c("BRBI","BRSEF","BRSEE","BRFU","BRST","BRBS","BRAS","BRHL")
+}
+
+
+
 DM_BRBI=apply(is.na(X[,items[9:12]]),1,sum)
 rs_BRBI=apply(X[,items[9:12]],1,sum,na.rm=TRUE)
 rs_BRBI=rs_BRBI/(4-DM_BRBI)

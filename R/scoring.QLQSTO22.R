@@ -1,5 +1,17 @@
 scoring.QLQSTO22 <-
-function(X,id="",items=1:22){
+function(X,id="",time=""){
+
+items=paste("q",31:52,sep="")
+
+if(length(which(is.element(items,colnames(X))))<22){
+stop("At least one item is missing: items must be named q31 to q52");
+break
+}
+
+if(length(which(match(items,colnames(X))==sort(match(items,colnames(X)))))<22){
+stop("Items must be named q31 to q52 and presented on that order in the dataset");
+break
+}
 
 if(sum(apply(X[,items],2,is.integer))<22){
 stop("Items must be integers");
@@ -14,16 +26,38 @@ stop("Maximum possible value for items is 4");
 break
 }
 
-if(id!=""){
+
+if((id!="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=11)
+Y=as.data.frame(Y)
+Y[,1]=X[,id]
+Y[,2]=X[,time]
+colnames(Y)=c(id,time,"STOBI","STODYS","STOPAIN","STORFX","STOEAT","STOANX","STODM","STOTA","STOHL")
+}
+
+if((id!="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=10)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
-
 colnames(Y)=c(id,"STOBI","STODYS","STOPAIN","STORFX","STOEAT","STOANX","STODM","STOTA","STOHL")
-}else{
+}
+
+if((id=="")&(time!="")){
+Y=matrix(nrow=nrow(X),ncol=10)
+Y=as.data.frame(Y)
+Y[,1]=X[,time]
+colnames(Y)=c(time,"STOBI","STODYS","STOPAIN","STORFX","STOEAT","STOANX","STODM","STOTA","STOHL")
+}
+
+if((id=="")&(time=="")){
 Y=matrix(nrow=nrow(X),ncol=9)
 Y=as.data.frame(Y)
-colnames(Y)=c("STOBI","STODYS","STOPAIN","STORFX","STOEAT","STOANX","STODM","STOTA","STOHL")}
+colnames(Y)=c("STOBI","STODYS","STOPAIN","STORFX","STOEAT","STOANX","STODM","STOTA","STOHL")
+}
+
+
+
+
 Y$STOBI[!is.na(X[,items[19]])]=(1-(X[!is.na(X[,items[19]]),items[19]]-1)/3)*100
 DM_STODYS=apply(is.na(X[,items[1:3]]),1,sum)
 rs_STODYS=apply(X[,items[1:3]],1,sum,na.rm=TRUE)
