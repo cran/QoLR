@@ -1,5 +1,5 @@
 TUDD <-
-function(X,score="",MCID,ref.init="baseline",ref.def="def1",order=1,no_baseline="censure",no_follow="censure",death=NA,sensitivity=FALSE){
+function(X,score="",MCID,ref.init="baseline",ref.def="def1",order=1,no_baseline="censored",no_follow="censored",death=NA,sensitivity=FALSE){
 
 
 if(length(score)==1){
@@ -63,12 +63,12 @@ stop("invalide value for 'order' parameter");
 break
 }
 
-if(!no_follow=="censure" & !no_follow=="event"){
+if(!no_follow=="censored" & !no_follow=="event"){
 stop("invalide value for 'no_follow' parameter");
 break
 }
 
-if(!no_baseline=="censure" & !no_baseline=="event" & !no_baseline=="excluded"){
+if(!no_baseline=="censored" & !no_baseline=="event" & !no_baseline=="excluded"){
 stop("invalide value for 'no_baseline' parameter");
 break
 }
@@ -154,10 +154,10 @@ if((ref.init=="previous")|(ref.init=="best")){
 pat_baseline=((is.na(scores[,1]))&(DM_follow<(ncol(scores)-1))&(is.na(dates[,1])))}
 ttd$event=NA
 ttd$date_end=NA
-if(no_baseline=="censure"){ttd$event[pat_baseline]=0}else{ttd$event[pat_baseline]=1} 
+if(no_baseline=="censored"){ttd$event[pat_baseline]=0}else{ttd$event[pat_baseline]=1} 
 ttd$date_end[pat_baseline]=0
 pat_fol=(DM_follow==(ncol(scores)-1))&(!is.na(scores[,1]))
-if(no_follow=="censure"){ttd$event[pat_fol]=0}else{ttd$event[pat_fol]=1}
+if(no_follow=="censored"){ttd$event[pat_fol]=0}else{ttd$event[pat_fol]=1}
 ttd$date_end[pat_fol]=1 
 if(ref.init=="baseline"){
 if(order[i]==1){   
@@ -275,13 +275,13 @@ if(nrow(mat)>=1){
 DM=apply(is.na(mat_dates),1,sum)
 essai=apply(mat_dates==0,1,sum,na.rm=TRUE) 
 DM=DM+essai
-pat_censure=as.numeric(names(which(DM<ncol(mat_dates))))
+pat_censored=as.numeric(names(which(DM<ncol(mat_dates))))
 rownames(mat_dates)=1:nrow(mat_dates)
-pat_censure_b=as.numeric(names(which(apply(is.na(mat_dates),1,sum)<ncol(mat_dates))))
-val=apply(mat_dates[pat_censure_b,],1,max,na.rm=TRUE)[apply(mat_dates[pat_censure_b,],1,max,na.rm=TRUE)>0]
+pat_censored_b=as.numeric(names(which(apply(is.na(mat_dates),1,sum)<ncol(mat_dates))))
+val=apply(mat_dates[pat_censored_b,],1,max,na.rm=TRUE)[apply(mat_dates[pat_censored_b,],1,max,na.rm=TRUE)>0]
 names(val)=NULL
-ttd$date_end[pat_censure]=val
-ttd$event[pat_censure]=0}
+ttd$date_end[pat_censored]=val
+ttd$event[pat_censored]=0}
 ttd$time=ttd$date_end-ttd[,2]
 ttd$time[pat_baseline]=0
 if(no_baseline=="excluded"){ttd$time[pat_baseline]=NA#################### on exclu ces patients

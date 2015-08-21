@@ -214,7 +214,7 @@ hr {
 
 <h1>Scoring the EORTC HRQoL questionnaires</h1>
 
-<p>The first application of the <code>QoLR</code> package is the estimation of the scores of most of the EORTC health-related quality of life (HRQOL) questionnaires like the QLQ-C30 cancer specific questionnaire [@aaronson1993european]. The method to calculate the scores of the EORTC HRQOL questionnaire is defined in the EORTC scoring manual [@fayers1999eortc]. All the modules implemented in the <code>QoLR</code> package are described in the next Table 1.</p>
+<p>The first application of the <code>QoLR</code> package is the estimation of the scores of most of the EORTC health-related quality of life (HRQOL) questionnaires, such as the QLQ-C30 cancer specific questionnaire (Aaronson et al. 1993). The method to calculate the scores of the EORTC HRQOL questionnaire is defined in the EORTC scoring manual (Fayers et al. 1999). All the modules implemented in the <code>QoLR</code> package are described in the next Table 1.</p>
 
 <table><thead>
 <tr>
@@ -327,8 +327,8 @@ hr {
 
 <p><strong>Table 1</strong>: Summary of the functions in the <code>QoLR</code> package for the scoring of the EORTC questionnaires</p>
 
-<p>The first argument of the function <code>scoring.QLQC30</code> and other functions for scoring is the name of the dataset with the items answers to the questionnaire (<code>X</code> parameter). The patient&#39;s identification number can be specified in <code>id</code> parameter. A time identification number can also be specified in <code>time</code> parameter if a longitudinal assessment of HRQoL is performed.<br/>
-The items have to be named <code>q1</code> to <code>qi</code> for the QLQ-C30 (i=30), QLQ-C15-PAL (i=15) and IN-PATSAT32 (i=32) questionnaire. For all other supplementary modules, items have to be named <code>q31</code> to <code>qi</code>, because these modules have to be administered in conjunction to the QLQ-C30 core questionnaire.
+<p>The first argument of the function <code>scoring.QLQC30</code> and other functions for scoring is the name of the dataset with the items comprising the answers to the questionnaire (<code>X</code> parameter). The patient&#39;s identification number can be specified in <code>id</code> parameter. A time identification number can also be specified in <code>time</code> parameter in case of a longitudinal HRQOL assessment.
+The items must be named <code>q1</code> to <code>qi</code> for the QLQ-C30 (i=30), QLQ-C15-PAL (i=15) and IN-PATSAT32 (i=32) questionnaire. For all other supplementary modules, items must be named <code>q31</code> to <code>qi</code>, because these modules have to be administered in conjunction to the QLQ-C30 core questionnaire.
 Moreover, the order of the items in the dataset has to be respected.</p>
 
 <p>For example, the <code>dataqol</code> dataset includes in the <code>QoLR</code> package contains the answers to the 30 items of the QLQ-C30, named <code>q1</code> to <code>q30</code>, for 40 patients with a longitudinal HRQOL assessment. A sample of the <code>dataqol</code> dataset is given below.</p>
@@ -367,7 +367,7 @@ head(dataqol)
 </code></pre>
 
 <p>The <code>scoring.QLQC30</code> function can thus be applied to estimate the HRQoL scores.
-The result is a data frame: each variable corresponds to a HRQOL score. The name of the scores are the same than those used in the EORTC scoring manual [@fayers1999eortc]. If a patient&#39;s identification number and/or a time&#39;s identification number was (were) specified in the <code>id</code> parameter and <code>time</code> parameter respectively, then this (these) variable(s) is (are) replicated in the data frame obtained.</p>
+The result is a data frame: each variable corresponds to a HRQOL score. The name of the scores are the same as those used in the EORTC scoring manual (Fayers et al. 1999). If a patient&#39;s identification number and/or a time&#39;s identification number was (were) specified in the <code>id</code> parameter and <code>time</code> parameter respectively, then this (these) variable(s) is (are) replicated in the data frame obtained.</p>
 
 <pre><code class="r">score_dataqol=scoring.QLQC30(dataqol,id=&quot;Id&quot;, time=&quot;time&quot;)
 head(round(score_dataqol))
@@ -384,22 +384,22 @@ head(round(score_dataqol))
 
 <h1>Time to HRQoL score deterioration</h1>
 
-<p>The second application of the <code>QoLR</code> package is the estimation of the time to HRQoL score deterioration [@anota2013time]. Both time to first deterioration [@hamidou2011time] and time until definitive deterioration [@bonnetain2010time] were implemented.</p>
+<p>The second application of the <code>QoLR</code> package is the estimation of the time to HRQoL score deterioration (Anota et al. 2015). Both time to first deterioration (Hamidou et al. 2011) and time until definitive deterioration (Bonnetain et al. 2010) were implemented.</p>
 
 <h2>Estimate the time to HRQoL score deterioration</h2>
 
 <h3>Time to deterioration</h3>
 
-<p>The function <code>TTD</code> alows to estimate the time to first deterioration [@hamidou2011time]. Several definitions were implemented depending on the reference score, the minimal clinically important difference, including or not patients with no baseline score and/or no follow-up score as an event, including or not death as an event. </p>
+<p>The function <code>TTD</code> allows to estimate the time to first deterioration (Hamidou et al. 2011). Several definitions were implemented depending on the reference score, the minimal clinically important difference, including or not patients with no baseline score and/or no follow-up score as an event, including or not death as an event. </p>
 
 <p>To apply this function, the dataset must respect a general structure. The dataset <code>X</code> must be in long format with the following variables in this order:</p>
 
 <ol>
-<li>Item Patient&#39;s identification number;</li>
+<li>Patient identification number;</li>
 <li>Variable identifying the HRQOL assessment number;</li>
 <li>Date of HRQOL measure;</li>
 <li>HRQOL scores;</li>
-<li>Other variables like the date of death or the treatment arm.</li>
+<li>Other variables, such as the date of death or the treatment arm.</li>
 </ol>
 
 <p>The dataset must also be sorted by patient&#39;s identification number and HRQOL measurement time. Dates must be in Julian format (i.e., number of days since a reference time point).</p>
@@ -434,11 +434,11 @@ head(round(score_dataqol))
 </tr>
 <tr>
 <td><code>no_baseline</code></td>
-<td>= <code>&quot;censure&quot;</code> (default)/= <code>&quot;event&quot;</code> /= <code>&quot;excluded&quot;</code></td>
+<td>= <code>&quot;censored&quot;</code> (default)/= <code>&quot;event&quot;</code> /= <code>&quot;excluded&quot;</code></td>
 </tr>
 <tr>
 <td><code>no_follow</code></td>
-<td>= <code>&quot;censure&quot;</code> (default)/= <code>&quot;event&quot;</code></td>
+<td>= <code>&quot;censored&quot;</code> (default)/= <code>&quot;event&quot;</code></td>
 </tr>
 <tr>
 <td><code>death</code></td>
@@ -455,20 +455,19 @@ head(round(score_dataqol))
 <p>The result of this function is a data frame with:</p>
 
 <ul>
-<li>the patient&#39;s identification number;</li>
-<li>a dummy variable called <code>event</code>equals to 1 if the patient is deteriorated, 0 if the patient is censored;</li>
-<li>a variable called <code>time</code> and equals to the time to censure or the time to the deterioration <em>in months</em>.</li>
+<li>the patient identification number;</li>
+<li>a dummy variable called <code>event</code>equal to 1 if the patient is deteriorated, 0 if the patient is censored;</li>
+<li>a variable called <code>time</code> and equal the time to the deterioration or the time to censoring <em>in months</em>.</li>
 </ul>
 
-<p>Like both variables <code>event</code> and <code>time</code> are created for each score treated and each definition of TTD, we added the name of the corresponding score as a suffix. As example, if <code>score = c(&quot;score1&quot;,&quot;score2&quot;)</code>.
-Then four variables are created: <code>event.score1</code>, <code>time.score1</code>, <code>event.score2</code> and <code>time.score2</code>.</p>
+<p>Since both variables <code>event</code> and <code>time</code> are created for each score treated and each definition of TTD, we added the name of the corresponding score as a suffix. As example, if <code>score = c(&quot;score1&quot;,&quot;score2&quot;)</code>, then four variables are created: <code>event.score1</code>, <code>time.score1</code>, <code>event.score2</code> and <code>time.score2</code>.</p>
 
 <p>Moreover, if <code>sensitivity == TRUE</code>, then added variables <code>event</code> and <code>time</code> are created:</p>
 
 <ul>
 <li><code>event.SA1</code> for sensitivity analysis #1: <code>event</code> and <code>event.SA1</code> are equals except for patients with no baseline score and those with no follow-up score, <code>event.SA1=1</code> while <code>event = 0</code>. Like <code>time.SA1 == time</code>, then <code>time.SA1</code> was omitted;</li>
 <li><code>event.SA2</code> and <code>time.SA2</code> for sensitivity analysis #2;</li>
-<li><code>event.SA3</code> for sensitivity analysis #3. Like <code>time.SA3 == time.SA2</code>, then  <code>time.SA3</code> was omitted.</li>
+<li><code>event.SA3</code> for sensitivity analysis #3. Since <code>time.SA3 == time.SA2</code>, then  <code>time.SA3</code> was omitted.</li>
 </ul>
 
 <p>To apply the <code>TTD</code> function on the data from <code>dataqol</code>, we have to first modify the <code>scoring_dataqol</code> dataframe in order to respect the requested format of the <code>TTD</code> function. </p>
@@ -479,7 +478,7 @@ Then four variables are created: <code>event.score1</code>, <code>time.score1</c
 dataqol_final=merge(score_dataqol,info,by=c(&quot;Id&quot;,&quot;time&quot;))
 </code></pre>
 
-<p>Then we reorganized the obtained <code>dataqol_final</code> dataset in order that the <code>date</code> variable appeared in the third position:</p>
+<p>Then we reorganized the obtained <code>dataqol_final</code> dataset in order that the <code>date</code> variable appeared in third position:</p>
 
 <pre><code class="r">dataqol_final=dataqol_final[,c(1:2,18,3:17,19:20)]
 head(round(dataqol_final))
@@ -517,11 +516,11 @@ head(round(dataqol_final))
 ## 27   2
 </code></pre>
 
-<p>To begin, we can study the time to deterioration as compared to the baseline <code>QL</code> score (<code>ref.init = &quot;baseline&quot;</code>) with at least 5-point MCID (<code>MCID = 5</code>) and considering patients with no baseline or with no follow-up measure censoring at baseline or just after baseline (<code>no_baseline = &quot;censure&quot;</code> and <code>no_follow = &quot;censure&quot;</code>). </p>
+<p>To begin, we can study the time to deterioration as compared to the baseline <code>QL</code> score (<code>ref.init = &quot;baseline&quot;</code>) with at least 5-point MCID (<code>MCID = 5</code>) and considering patients with no baseline or with no follow-up measure censoring at baseline or just after baseline (<code>no_baseline = &quot;censored&quot;</code> and <code>no_follow = &quot;censored&quot;</code>). </p>
 
 <p>The score <code>QL</code> corresponds to a measure of global HRQOL with a high score represents a high global HRQoL level. In this way, a deterioration corresponds to a decrease of the score (<code>order = 1</code>). </p>
 
-<p>Like the values of these parameters are the default values except for the MCID, we do not need to specify their values and the function can be applied as follows:</p>
+<p>Since the values of these parameters are the default values except for the MCID, we do not need to specify their values and the function can be applied as follows:</p>
 
 <pre><code class="r">ttd1=TTD(dataqol_final, score=&quot;QL&quot;, MCID=5)
 head(ttd1)
@@ -536,7 +535,7 @@ head(ttd1)
 ## 6  6        1 1.70841889
 </code></pre>
 
-<p>The result is a data frame with the identification number of patients (<code>Id</code>), the time to deterioration or to censure in months (<code>time.QL</code>) and a dummy variable (<code>event.QL</code>) indicating if the patient is deteriorated (<code>event.QL =1</code>) or not (<code>event.QL =0</code>). The suffix &ldquo;<code>QL</code>&rdquo; corresponds to the name of the treated score.</p>
+<p>The result is a data frame with the identification number of patients (<code>Id</code>), the time to deterioration or to censoring in months (<code>time.QL</code>) and a dummy variable (<code>event.QL</code>) indicating whether the patient is deteriorated (<code>event.QL =1</code>) or not (<code>event.QL =0</code>). The suffix &ldquo;<code>QL</code>&rdquo; corresponds to the name of the treated score.</p>
 
 <p>If we want to consider patients with no baseline or no follow up as events, we have to fix the parameters <code>no_baseline</code> and <code>no_follow</code> to <code>&quot;event&quot;</code> as follows:</p>
 
@@ -663,11 +662,11 @@ head(ttd6)
 </tr>
 <tr>
 <td><code>no_baseline</code></td>
-<td>= <code>&quot;censure&quot;</code> (default)/= <code>&quot;event&quot;</code> /= <code>&quot;excluded&quot;</code></td>
+<td>= <code>&quot;censored&quot;</code> (default)/= <code>&quot;event&quot;</code> /= <code>&quot;excluded&quot;</code></td>
 </tr>
 <tr>
 <td><code>no_follow</code></td>
-<td>= <code>&quot;censure&quot;</code> (default)/= <code>&quot;event&quot;</code></td>
+<td>= <code>&quot;censored&quot;</code> (default)/= <code>&quot;event&quot;</code></td>
 </tr>
 <tr>
 <td><code>death</code></td>
@@ -681,17 +680,17 @@ head(ttd6)
 
 <p><strong>Table 3</strong> Arguments of the <code>TUDD</code> function</p>
 
-<p>Only one supplementary parameter as compared to <code>TTD()</code> function is available: the parameter <code>ref.def</code> in which you can specify the notion of &ldquo;definitive deterioration&rdquo; according to the three proposed definition in section 2 :</p>
+<p>Only one supplementary parameter as compared to <code>TTD()</code> function is available: the parameter <code>ref.def</code> in which you can specify the notion of &ldquo;definitive deterioration&rdquo; according to the proposed definitions :</p>
 
 <ul>
 <li>With no further improvement of k points at least as compared to the reference score (<code>ref.def = &quot;def1&quot;</code>);</li>
-<li>with maintaining this deterioration of at least k points for all following scores, i.e., the deterioration is observed for all the following scores (<code>ref.def = &quot;def2&quot;</code>);</li>
-<li>with no further improvement of at least k points as compared to the score qualifying the deterioration (<code>ref.def = &quot;def3&quot;</code>).</li>
+<li>with maintaining this deterioration of k points at least for all following scores, i.e., the deterioration is observed for all the following scores (<code>ref.def = &quot;def2&quot;</code>);</li>
+<li>with no further improvement of k points at least as compared to the score qualifying the deterioration (<code>ref.def = &quot;def3&quot;</code>).</li>
 </ul>
 
 <p>Moreover, in this function, you can performed sensitivity analysis according to the MCID, thus the <code>MCID</code> parameter is a vector, not a scalar.</p>
 
-<p>By default, the deterioration is defined as a deterioration with a k-point MCID as compared with the baseline score with no further improvement of of more than k points as compared to the baseline score [@bonnetain2010time]. The result of the application of this function is fairly similar to the one of the <code>TTD</code>. However, for <code>TUDD</code>, the value of the MCID is also specified in the variables name <code>time</code> and <code>event</code>. </p>
+<p>By default, the deterioration is defined as a deterioration with a k-point MCID as compared with the baseline score with no further improvement of of more than k points as compared to the baseline score (Bonnetain et al. 2010). The result of the application of this function is fairly similar to that of the <code>TTD</code>. However, for <code>TUDD</code>, the value of the MCID is also specified in the variable names <code>time</code> and <code>event</code>. </p>
 
 <p>The result of the reference definition of TUDD is the following:</p>
 
@@ -723,7 +722,7 @@ head(tudd2)
 ## 6  6          0 11.49897331
 </code></pre>
 
-<p>Like we did for the time to deterioration, all the sensitivity analyses can be performed simultaneously with the primary definition of TUDD. Moreover, many minimal clinically important difference (MCID) can be specified. An indicator of the MCID value is added as a suffix of the resulting parameters <code>event</code> and <code>time</code>:</p>
+<p>As for the time to deterioration, all the sensitivity analyses can be performed simultaneously with the primary definition of TUDD. Moreover, many minimal clinically important difference (MCID) can be specified. An indicator of the MCID value is added as a suffix of the resulting parameters <code>event</code> and <code>time</code>:</p>
 
 <pre><code class="r">tudd3=TUDD(dataqol_final, score=&quot;PF&quot;, MCID=c(5,10), sensitivity=T)
 head(round(tudd3,2))
@@ -745,22 +744,22 @@ head(round(tudd3,2))
 ## 6              1
 </code></pre>
 
-<p>In this application, death has not been taken into account. Only two sensitivity analyses were performed: the first one regarding patients with no baseline or no follow-up measure and the second one on the MCID value.</p>
+<p>In this application, death has not been taken into account. Only two sensitivity analyses were performed: the first regarding patients with no baseline or no follow-up measure and the second on the MCID value.</p>
 
 <h2>Plot the Kaplan-Meier survival curve</h2>
 
-<p>The <code>plotTTD</code> function allows to obtain the time to deterioration curves estimated according to the Kaplan-Meier method for all patients or by treatment arm (only two groups are allowed). The <code>time</code> parameter is a vector equals to the time to deterioration or the time to censure and the <code>event</code> parameter is a dummy vector equals to 1 if the patient is deteriorated and 0 if not.</p>
+<p>The <code>plotTTD</code> function allows to obtain the time to deterioration curves estimated according to the Kaplan-Meier method for all patients or by treatment arm (only two groups are allowed). The <code>time</code> parameter is a vector equal to the time to deterioration or the time to censoring and the <code>event</code> parameter is a dummy vector equals to 1 if the patient is deteriorated and 0 if not.</p>
 
-<p>Some other information can be added in option like at regular time point <code>t</code> for all patients or by treatment arm:</p>
+<p>Other information can also be added using options, e.g., at regular time point <code>t</code> for all patients or by treatment arm:</p>
 
 <ul>
 <li>number of patients at risk (<code>nrisk=T</code>);</li>
 <li>cumulative number of events (<code>nevents=T</code>).</li>
 </ul>
 
-<p>In the case of TTD curves by treatment arm you have to give the name of the group variable in the <code>group</code> parameter and the label of the each group you want to print in the  <code>group.names</code> parameter, hazard ratio with 95% confidence interval and log-rank test can be added on the graph (<code>info = TRUE</code>) at a determined position specified by the user (<code>pos.info = c()</code>).</p>
+<p>In the case of TTD curves by treatment arm you must give the name of the group variable in the <code>group</code> parameter and the label of each group as you would like it to print in the <code>group.name</code> parameter. The hazard ratio with 95% confidence interval and log-rank test can also be added on the graph (<code>info = TRUE</code>) at a determined position specified by the user (<code>pos.info = c()}</code>).</p>
 
-<p><code>xlab</code> and <code>ylab</code> correspond to the name of the abscissa and ordinate axis. The Table 4 summarizes the arguments of this function.</p>
+<p><code>xlab</code> and <code>ylab</code> correspond to the name of the horizontal and vertical axis respectively. The Table 4 summarizes the arguments of this function.</p>
 
 <table><thead>
 <tr>
@@ -816,7 +815,7 @@ head(round(tudd3,2))
 
 <p><strong>Table 3</strong> Arguments of the <code>plotTTD</code> function</p>
 
-<p>AS example, the Figure 1 corresponds to the TUDD of <code>QL</code> score as compared to the baseline score with a 5-point MCID according treatment arm (<code>Arm</code> parameter). In this graph, we printed the number of patients still at risk at each time point according to treatment arm (<code>nrisk=T</code>). Moreover, the result of the log-rank test and the hazard ratio of Arm 2 vs. Arm 1 is also printed (<code>info=T</code>, <code>pos.info=c(6,0.8)</code>). The hazard ratio (Arm 2 vs. Arm 1) equals to \(2.86\) with 95% confidence interval \((1.16-7.09)\) and the result of the log-rank test is \(p=0.018\).</p>
+<p>AS example, the Figure 1 corresponds to the TUDD of <code>QL</code> score as compared to the baseline score with a 5-point MCID according treatment arm (<code>Arm</code> parameter). In this graph, we printed the number of patients still at risk at each time point according to treatment arm (<code>nrisk=T</code>). Moreover, the result of the log-rank test and the hazard ratio of Arm 2 vs. Arm 1 is also printed (<code>info=T</code>, <code>pos.info=c(6,0.8)</code>). The hazard ratio (Arm 2 vs. Arm 1) equals \(2.86\) with 95% confidence interval \((1.16-7.09)\) and the result of the log-rank test is \(p=0.018\).</p>
 
 <pre><code class="r">tudd1=TUDD(dataqol_final, score=&quot;QL&quot;, MCID=5,ref.init=&quot;baseline&quot;,ref.def=&quot;def1&quot;)
 ttd_1=merge(tudd1,unique(dataqol_final[,c(&quot;Id&quot;,&quot;Arm&quot;)]))
@@ -828,6 +827,16 @@ xlab=&quot;time (months)&quot;, ylab=&quot;probability (%)&quot;)
 <p><img src="data:image/png;base64,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" title="plot of chunk plotTTD" alt="plot of chunk plotTTD" style="display: block; margin: auto;" /></p>
 
 <h1>References</h1>
+
+<p>Neil K Aaronson, Sam Ahmedzai, Bengt Bergman, Monika Bullinger, Ann Cull, Nicole J Duez, Antonio Filiberti, et al. 1993. &ldquo;The European Organization for Research and Treatment of Cancer QLQ-C30: A Quality-of-Life Instrument for Use in International Clinical Trials in Oncology.&rdquo; Journal of the National Cancer Institute 85 (5). Oxford University Press: 365-76.</p>
+
+<p>Amelie Anota, Zeinab Hamidou, Sophie Paget-Bailly, Benoist Chibaudel, Caroline Bascoul-Mollevi, Pascal Auquier, Virginie Westeel, Frederic Fiteni, Christophe Borg, and Franck Bonnetain. 2015. &ldquo;Time to Health-Related Quality of Life Score Deterioration as a Modality of Longitudinal Analysis for Health-Related Quality of Life Studies in Oncology: Do We Need RECIST for Quality of Life to Achieve Standardization?&rdquo; Quality of Life Research 24 (1). Springer-Verlag: 5-18.</p>
+
+<p>Franck Bonnetain, Laetitia Dahan, Emilie Maillard, Marc Ychou, Emmanuel Mitry, Pascal Hammel, Jean-Louis Legoux, Philippe Rougier, Laurent Bedenne, and Jean-Francois Seitz. 2010. &ldquo;Time Until Definitive Quality of Life Score Deterioration as a Means of Longitudinal Analysis for Treatment Trials in Patients with Metastatic Pancreatic Adenocarcinoma.&rdquo; European Journal of Cancer 46 (15). Elsevier: 2753-62.</p>
+
+<p>Peter M Fayers, Niel K Aaronson, Kristin Bjordal, D Curran, and Mogens Gronvold. 1999. EORTC QLQ-C30 Scoring Manual. EORTC.</p>
+
+<p>Zeinab Hamidou, Tienhan S Dabakuyo, Mariette Mercier, Jean Fraisse, Sylvain Causeret, Herve Tixier, Marie-Martine Padeano, et al. 2011. &ldquo;Time to Deterioration in Quality of Life Score as a Modality of Longitudinal Analysis in Patients with Breast Cancer.&rdquo; The Oncologist 16 (10). AlphaMed Press: 1458-68.</p>
 
 </body>
 

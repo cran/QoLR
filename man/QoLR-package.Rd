@@ -12,8 +12,8 @@ with different definitions of deterioration explored.}
 \tabular{ll}{
 Package: \tab QoLR\cr
 Type: \tab Package\cr
-Version: \tab 1.0.1\cr
-Date: \tab 2015-07-28\cr
+Version: \tab 1.0.2\cr
+Date: \tab 2015-08-21\cr
 License: \tab GPL (>=2.0)\cr
 }
 A set of functions to generate the scores of the EORTC QLQ-C30 questionnaire, for example function 'scoring.QLQC30', and supplementary modules. A function 'TTD' to determine the time to deterioration in a Health-related Quality of Life score in longitudinal analysis and function 'TUDD' to determine the time until definitive deterioration.
