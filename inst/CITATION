@@ -1,0 +1,29 @@
+bibentry(bibtype = "Article",
+  title        = "{QoLR}: An {R} Package for the Longitudinal Analysis of Health-Related Quality of Life in Oncology",
+  author       = c(person(given = "Am\\'elie",
+                          family = "Anota",
+                          email = "aanota@chu-besancon.fr"),
+                   person(given = "Marion",
+                          family = "Savina",
+                          email = "Marion.Savina@isped.u-bordeaux2.fr"),
+                   person(given = "Caroline",
+                          family = "Bascoul-Mollevi",
+                          email = "Caroline.Mollevi@icm.unicancer.fr"),
+                   person(given = "Franck",
+                          family = "Bonnetain",
+                          email = "franck.bonnetain@univ-fcomte.fr")),
+  journal      = "Journal of Statistical Software",
+  year         = "2017",
+  volume       = "77",
+  number       = "12",
+  pages        = "1--30",
+  doi          = "10.18637/jss.v077.i12",
+
+  header       = "To cite QoLR in publications use:",
+  textVersion  =
+  paste("Amelie Anota, Marion Savina, Caroline Bascoul-Mollevi, Franck Bonnetain (2017).",
+        "QoLR: An R Package for the Longitudinal Analysis of Health-Related Quality of Life in Oncology.",
+        "Journal of Statistical Software, 77(12), 1-30.",
+        "doi:10.18637/jss.v077.i12")
+)
+

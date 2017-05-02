@@ -27,76 +27,87 @@ break
 }
 
 if((id!="")&(time!="")){
-Y=matrix(nrow=nrow(X),ncol=15)
+Y=matrix(nrow=nrow(X),ncol=10)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
 Y[,2]=X[,time]
-colnames(Y)=c(id,time,"NUTRITION","FATIGUE","PAIN","EMOTIONAL_PROBLEMS","WEIGHT_LOSS","TASTE","DRY_MOUTH","SORE_MOUTH",
-"PERIPHERAL_NEUROPATHY","JAUNDICE","SOCIAL_PROBLEMS","TALKING_FEELINGS","SEXUAL_PROBLEMS")
+colnames(Y)=c(id,time,"OVBI","OVSE","OVAT","OVAG","OVPN","OVHM","OVCH","OVHL")
 }
 
 if((id!="")&(time=="")){
-Y=matrix(nrow=nrow(X),ncol=14)
+Y=matrix(nrow=nrow(X),ncol=9)
 Y=as.data.frame(Y)
 Y[,1]=X[,id]
-colnames(Y)=c(id,"NUTRITION","FATIGUE","PAIN","EMOTIONAL_PROBLEMS","WEIGHT_LOSS","TASTE","DRY_MOUTH","SORE_MOUTH",
-"PERIPHERAL_NEUROPATHY","JAUNDICE","SOCIAL_PROBLEMS","TALKING_FEELINGS","SEXUAL_PROBLEMS")
+colnames(Y)=c(id,"OVBI","OVSE","OVAT","OVAG","OVPN","OVHM","OVCH","OVHL")
 }
 
 if((id=="")&(time!="")){
-Y=matrix(nrow=nrow(X),ncol=14)
+Y=matrix(nrow=nrow(X),ncol=9)
 Y=as.data.frame(Y)
 Y[,1]=X[,time]
-colnames(Y)=c(time,"NUTRITION","FATIGUE","PAIN","EMOTIONAL_PROBLEMS","WEIGHT_LOSS","TASTE","DRY_MOUTH","SORE_MOUTH",
-"PERIPHERAL_NEUROPATHY","JAUNDICE","SOCIAL_PROBLEMS","TALKING_FEELINGS","SEXUAL_PROBLEMS")
+colnames(Y)=c(time,"OVBI","OVSE","OVAT","OVAG","OVPN","OVHM","OVCH","OVHL")
 }
 
 if((id=="")&(time=="")){
-Y=matrix(nrow=nrow(X),ncol=13)
+Y=matrix(nrow=nrow(X),ncol=8)
 Y=as.data.frame(Y)
-colnames(Y)=c("NUTRITION","FATIGUE","PAIN","EMOTIONAL_PROBLEMS","WEIGHT_LOSS","TASTE","DRY_MOUTH","SORE_MOUTH",
-"PERIPHERAL_NEUROPATHY","JAUNDICE","SOCIAL_PROBLEMS","TALKING_FEELINGS","SEXUAL_PROBLEMS")
+colnames(Y)=c("OVBI","OVSE","OVAT","OVAG","OVPN","OVHM","OVCH","OVHL")
 }
 
 
 
-MD_NUTRITION=apply(is.na(X[,items[1:2]]),1,sum)
-rs_NUTRITION=apply(X[,items[1:2]],1,sum,na.rm=TRUE)
-rs_NUTRITION=rs_NUTRITION/(2-MD_NUTRITION)
-Y$NUTRITION[MD_NUTRITION<=1]=(rs_NUTRITION[MD_NUTRITION<=1]-1)/3*100
 
-MD_FATIGUE=apply(is.na(X[,items[c(7,13,14)]]),1,sum)
-rs_FATIGUE=apply(X[,items[c(7,13,14)]],1,sum,na.rm=TRUE)
-rs_FATIGUE=rs_FATIGUE/(3-MD_FATIGUE)
-Y$FATIGUE[MD_FATIGUE<=1]=(rs_FATIGUE[MD_FATIGUE<=1]-1)/3*100
+MD_ABDOMINAL_GI=apply(is.na(X[,items[1:7]]),1,sum)
+rs_ABDOMINAL_GI=apply(X[,items[1:7]],1,sum,na.rm=TRUE)
+rs_ABDOMINAL_GI=rs_ABDOMINAL_GI/(7-MD_ABDOMINAL_GI)
+Y$OVAG[MD_ABDOMINAL_GI<=3]=(rs_ABDOMINAL_GI[MD_ABDOMINAL_GI<=3]-1)/3*100
 
-MD_PAIN=apply(is.na(X[,items[c(9,10,12)]]),1,sum)
-rs_PAIN=apply(X[,items[c(9,10,12)]],1,sum,na.rm=TRUE)
-rs_PAIN=rs_PAIN/(3-MD_PAIN)
-Y$PAIN[MD_PAIN<=1]=(rs_PAIN[MD_PAIN<=1]-1)/3*100
+MD_PN=apply(is.na(X[,items[11:13]]),1,sum)
+rs_PN=apply(X[,items[11:13]],1,sum,na.rm=TRUE)
+rs_PN=rs_PN/(3-MD_PN)
+Y$OVPN[MD_PN<=1]=(rs_PN[MD_PN<=1]-1)/3*100
 
-MD_EMOTIONAL_PROBLEMS=apply(is.na(X[,items[17:20]]),1,sum)
-rs_EMOTIONAL_PROBLEMS=apply(X[,items[17:20]],1,sum,na.rm=TRUE)
-rs_EMOTIONAL_PROBLEMS=rs_EMOTIONAL_PROBLEMS/(4-MD_EMOTIONAL_PROBLEMS)
-Y$EMOTIONAL_PROBLEMS[MD_EMOTIONAL_PROBLEMS<=2]=(rs_EMOTIONAL_PROBLEMS[MD_EMOTIONAL_PROBLEMS<=2]-1)/3*100
+MD_H=apply(is.na(X[,items[18:19]]),1,sum)
+rs_H=apply(X[,items[18:19]],1,sum,na.rm=TRUE)
+rs_H=rs_H/(2-MD_H)
+Y$OVHM[MD_H<=1]=(rs_H[MD_H<=1]-1)/3*100
 
-Y$WEIGHT_LOSS[!is.na(X[,items[3]])]=(X[!is.na(X[,items[3]]),items[3]]-1)/3*100
+MD_BI=apply(is.na(X[,items[20:21]]),1,sum)
+rs_BI=apply(X[,items[20:21]],1,sum,na.rm=TRUE)
+rs_BI=rs_BI/(2-MD_BI)
+Y$OVBI[MD_BI<=1]=(1-(rs_BI[MD_BI<=1]-1)/3)*100
 
-Y$TASTE[!is.na(X[,items[4]])]=(X[!is.na(X[,items[4]]),items[4]]-1)/3*100
+MD_ADT=apply(is.na(X[,items[22:24]]),1,sum)
+rs_ADT=apply(X[,items[22:24]],1,sum,na.rm=TRUE)
+rs_ADT=rs_ADT/(3-MD_ADT)
+Y$OVAT[MD_ADT<=1]=(1-(rs_ADT[MD_ADT<=1]-1)/3)*100
 
-Y$DRY_MOUTH[!is.na(X[,items[5]])]=(X[!is.na(X[,items[5]]),items[5]]-1)/3*100
+MD_CT=apply(is.na(X[,items[c(10,14:17)]]),1,sum)
+rs_CT=apply(X[,items[c(10,14:17)]],1,sum,na.rm=TRUE)
+rs_CT=rs_CT/(5-MD_CT)
+Y$OVCH[MD_CT<=2]=(rs_CT[MD_CT<=2]-1)/3*100
 
-Y$SORE_MOUTH[!is.na(X[,items[6]])]=(X[!is.na(X[,items[6]]),items[6]]-1)/3*100
 
-Y$PERIPHERAL_NEUROPATHY[!is.na(X[,items[8]])]=(X[!is.na(X[,items[8]]),items[8]]-1)/3*100
+Y$OVHL[X[,items[8]]==1]=0
+MD_Hl=apply(is.na(X[,items[8:9]]),1,sum)
+rs_Hl=apply(X[,items[8:9]],1,sum,na.rm=TRUE)
+rs_Hl=rs_Hl/(2-MD_Hl)
+Y$OVHL[intersect(which(MD_Hl<=1),which(is.na(Y$OVHL)))]=
+(rs_Hl[intersect(which(MD_Hl<=1),which(is.na(Y$OVHL)))]-1)/3*100
 
-Y$JAUNDICE[!is.na(X[,items[11]])]=(X[!is.na(X[,items[11]]),items[11]]-1)/3*100
 
-Y$SOCIAL_PROBLEMS[!is.na(X[,items[15]])]=(X[!is.na(X[,items[15]]),items[15]]-1)/3*100
+MD_SF=apply(is.na(X[,items[25:26]]),1,sum)
+rs_SF=apply(X[,items[25:26]],1,sum,na.rm=TRUE)
+rs_SF=rs_SF/(2-MD_SF)
+Y$OVSE[intersect(which(MD_SF<=1),which(X[,items[26]]==1))]=(rs_SF[intersect(which(MD_SF<=1),which(X[,items[26]]==1))]-1)/3*100
 
-Y$TALKING_FEELINGS[!is.na(X[,items[16]])]=(X[!is.na(X[,items[16]]),items[16]]-1)/3*100
+X[,items[28]]=5-X[,items[28]]
+MD_SF=apply(is.na(X[,items[25:28]]),1,sum)
+rs_SF=apply(X[,items[25:28]],1,sum,na.rm=TRUE)
+rs_SF=rs_SF/(4-MD_SF)
+Y$OVSE[intersect(which(MD_SF<=2),which(!X[,items[26]]==1))]=(rs_SF[intersect(which(MD_SF<=2),which(!X[,items[26]]==1))]-1)/3*100
 
-Y$SEXUAL_PROBLEMS[!is.na(X[,items[21]])]=(X[!is.na(X[,items[21]]),items[21]]-1)/3*100
+
 
 Y
 }

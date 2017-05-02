@@ -81,6 +81,7 @@ rs_STOANX=rs_STOANX/(3-DM_STOANX)
 Y$STOANX[DM_STOANX<=1]=(rs_STOANX[DM_STOANX<=1]-1)/3*100
 Y$STODM[!is.na(X[,items[14]])]=(X[!is.na(X[,items[14]]),items[14]]-1)/3*100
 Y$STOTA[!is.na(X[,items[15]])]=(X[!is.na(X[,items[15]]),items[15]]-1)/3*100
+
 DM_STOHL=apply(is.na(X[,items[21:22]]),1,sum)
 rs_STOHL=apply(X[,items[21:22]],1,sum,na.rm=TRUE)
 rs_STOHL=rs_STOHL/(2-DM_STOHL)

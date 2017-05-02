@@ -12,8 +12,8 @@ with different definitions of deterioration explored.}
 \tabular{ll}{
 Package: \tab QoLR\cr
 Type: \tab Package\cr
-Version: \tab 1.0.2\cr
-Date: \tab 2015-08-21\cr
+Version: \tab 1.0.3\cr
+Date: \tab 2017-05-01\cr
 License: \tab GPL (>=2.0)\cr
 }
 A set of functions to generate the scores of the EORTC QLQ-C30 questionnaire, for example function 'scoring.QLQC30', and supplementary modules. A function 'TTD' to determine the time to deterioration in a Health-related Quality of Life score in longitudinal analysis and function 'TUDD' to determine the time until definitive deterioration.
@@ -25,6 +25,8 @@ Maintainer: Amelie Anota <aanota@chu-besancon.fr>
 }
 
 \references{
+Amelie Anota, Marion Savina, Caroline Bascoul-Mollevi, Franck Bonnetain (2017)., QoLR: An R Package for the Longitudinal Analysis of Health-Related Quality of Life in Oncology. Journal of Statistical Software, 77(12), 1-30, doi:10.18637/jss.v077.i12.
+
 Anota A. et al. Time to Health-related Quality of Life score deterioration as a modality of longitudinal analysis for health-related quality of life studies in oncology: do we need RECIST for quality of life to achieve standardization? Qual Life Res. 2015, 24(1):5-18.
 
 Bonnetain F. et al. Time until definitive deterioration as a means of longitudinal analysis for treatment trials in patients with metastatic pancreatic adenocarcinoma. Eur J Cancer 2010, 46(5): 2753-2762.

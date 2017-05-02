@@ -1,11 +1,11 @@
 Package: QoLR
-Version: 1.0.2
-Date: 2015-08-21
+Version: 1.0.3
+Date: 2017-05-01
 Title: Analysis of Health-Related Quality of Life in Oncology
 Author: Amelie Anota
 Maintainer: Amelie Anota <aanota@chu-besancon.fr>
 Depends: R (>= 2.10.0), survival, zoo
-Description: To generate the scores of the EORTC QLQ-C30 questionnaire and supplementary modules and to determine the time to health-related quality of life score deterioration in longitudinal analysis.
+Description: To generate the scores of the EORTC QLQ-C30 questionnaire <http://www.eortc.be/qol/files/SCManualQLQ-C30.pdf> and supplementary modules and to determine the time to health-related quality of life score deterioration in longitudinal analysis.
 License: GPL (>= 2.0)
 URL:
         http://www.umqvc.org/en/tool/the-r-package-qolr-analysis-of-health-related-quality-of-life-in-oncology-6.html
@@ -13,6 +13,6 @@ Suggests: knitr
 VignetteBuilder: knitr
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2015-08-21 11:25:53 UTC; Amélie
+Packaged: 2017-05-02 07:59:40 UTC; Amélie
 Repository: CRAN
-Date/Publication: 2015-08-21 16:57:51
+Date/Publication: 2017-05-02 10:55:44 UTC
